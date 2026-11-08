@@ -29,6 +29,12 @@ an estimate while MicroVMs run, and asks before creating anything that bills.
 
 MicroVM Studio collects nothing and sends nothing to its author. See the [privacy policy](privacy.md).
 
+## Licence
+
+MicroVM Studio is free to use, and its source isn't public. Using it means accepting the
+[licence agreement](eula.md), which says you're responsible for the charges in your AWS account and that the app
+comes with no warranty. The App Store edition is covered by Apple's standard licence.
+
 ## Support
 
 Report problems or ask questions in [Issues](https://github.com/fabiodouek/microvm-studio/issues).
