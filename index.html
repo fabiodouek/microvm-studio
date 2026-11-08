@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MicroVM Studio</title><style>:root{color-scheme:light dark;--fg:#1d1d1f;--muted:#55575c;--bg:#fff;--link:#0a5bd8}
+@media (prefers-color-scheme:dark){:root{--fg:#f2f2f4;--muted:#a8a9ad;--bg:#151517;--link:#6aa8ff}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:40px 16px 64px}h1{font-size:2em;margin:.2em 0 .4em}h2{margin-top:1.6em}
+a{color:var(--link)}.muted{color:var(--muted)}hr{border:0;border-top:1px solid #8884;margin:2em 0}
+code{font:.9em ui-monospace,Menlo,monospace}li{margin:.25em 0}</style></head><body><main>
+<h1>MicroVM Studio</h1>
+<p>A native Mac app for working in <a href="https://aws.amazon.com/lambda/">AWS Lambda MicroVMs</a>. It shows your MicroVMs and opens terminals into them. It also keeps reusable <strong>workspaces</strong>, each with its repos, credentials and setup, so every new MicroVM is ready to work in, Claude Code included.</p>
+<p><strong><a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download the latest version</a></strong></p>
+<h2>Requirements</h2>
+<ul><li>macOS 15 or later, on Apple silicon or Intel.</li><li>An AWS account that can run Lambda MicroVMs, with a profile in <code>~/.aws/config</code> (access keys or IAM Identity Center).</li></ul>
+<h2>What it does</h2>
+<ul><li>Lists your MicroVMs, opens terminals into them, and keeps sessions alive while you work.</li><li>Launches MicroVMs from workspaces: your GitHub repos cloned, secrets from your Mac's Keychain, an AWS role, Claude Code signed in through Anthropic or Amazon Bedrock, and your own setup commands.</li><li>Can keep <code>/workspace</code> on Amazon EFS, so your files outlive the MicroVM.</li><li>Copies files in and out of a running MicroVM.</li><li>Warns before MicroVMs reach their time limit, and shows what's running and what it costs.</li></ul>
+<h2>Costs</h2>
+<p>MicroVMs, EFS file systems and the network resources the app creates bill to <strong>your</strong> AWS account. The app shows an estimate while MicroVMs run, and asks before creating anything that bills.</p>
+<h2>Privacy</h2>
+<p>MicroVM Studio collects nothing and sends nothing to its author. See the <a href="privacy.html">privacy policy</a>.</p>
+<h2>Support</h2>
+<p>Report problems or ask questions in <a href="https://github.com/fabiodouek/microvm-studio/issues">Issues</a>.</p>
+<hr>
+<p class="muted">MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</main></body></html>
