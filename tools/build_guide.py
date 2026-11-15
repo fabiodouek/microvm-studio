@@ -34,7 +34,6 @@ HEADER = """<header class="site-header"><div class="wrap">
 <a href="../" aria-current="page">User guide</a>
 <a href="../../#videos">Walkthroughs</a>
 <a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
-<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
 </nav></div></header>"""
 
 FOOTER = """<footer class="site-footer"><div class="wrap">
