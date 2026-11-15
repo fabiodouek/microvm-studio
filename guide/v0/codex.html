@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Codex · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html" aria-current="page">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Codex</h1>
+<p>The starter image has Codex installed. Choose how it signs in under <strong>Sign-in</strong> in the workspace's Codex section, after Claude Code's. New workspaces start with <strong>None</strong>, unless Settings → General → <strong>New workspaces</strong> chooses a Codex sign-in for them. Set the start command to <code>codex</code> to open it when the session starts.</p>
+<h2>An OpenAI API key</h2>
+<p>Choose <strong>OpenAI API key</strong>, and pick the secret that holds your key, or <strong>New Secret…</strong> to add one. The key stays in this Mac's Keychain and goes only to your MicroVMs. Codex in the MicroVM gets it as <code>OPENAI_API_KEY</code>. A project key you can revoke is safest.</p>
+<h2>Sign in with ChatGPT</h2>
+<p>Choose <strong>Sign in with ChatGPT in the MicroVM</strong>. When you connect and Codex isn't signed in yet, the terminal runs <code>codex login --device-auth</code>, which shows a link and a code: open the link on any device, sign in, and enter the code. It all happens in the MicroVM, so no secret from this Mac goes into it. Press Control-C to skip it for now.</p>
+<p>With a persistent <code>/workspace</code>, Codex keeps its sign-in in <code>/workspace/.codex</code>, so new MicroVMs from the workspace stay signed in, and no other workspace can reach it. Without one, each new MicroVM asks you to sign in again.</p>
+<h2>The image needs Codex</h2>
+<p>The starter image has it. One built before it did says <strong>A newer recipe is available.</strong> in Settings → Images: update it there. For an image of your own, tick <strong>Codex</strong> under Packages in Settings → Images. When the chosen image was built by MicroVM Studio without Codex, the Codex section says so. An image built elsewhere can't be checked: if Codex is missing when you connect, the terminal says <strong>Codex isn't installed in this image, so it can't sign in.</strong></p>
+<div class="pager"><a href="claude-code.html">← Claude Code</a><a href="aws-roles.html">AWS Roles and Bedrock →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

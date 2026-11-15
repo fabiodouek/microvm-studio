@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Getting Started · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html" aria-current="page">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Getting Started</h1>
+<p>MicroVM Studio starts AWS Lambda MicroVMs from workspaces you set up, and gives each one a terminal on your Mac.</p>
+<h2>What you need</h2>
+<ul>
+<li>An AWS account in a region with Lambda MicroVMs: us-east-1, us-east-2, us-west-2, eu-west-1 or ap-northeast-1.</li>
+<li>An AWS profile on this Mac, in <code>~/.aws/config</code> or <code>~/.aws/credentials</code>. Settings can make one for IAM Identity Center.</li>
+</ul>
+<h2>Setting up</h2>
+<p>Until you save a workspace, the main window shows <strong>Get started</strong>: a short checklist. Each line is ticked once it's done, says what it's set to, and has a button that opens Settings on the right tab. Do them in any order, and come back to any of them later in Settings. Once a workspace is saved, the checklist is gone for good.</p>
+<ul>
+<li><strong>Add an AWS profile.</strong> <strong>Add a Profile…</strong> opens Settings → General. In the <strong>AWS profile</strong> menu at the top, <strong>Add a Profile…</strong> saves a profile for IAM Identity Center and signs you in in your browser. Using access keys? Run <code>aws configure</code> in Terminal, then choose <strong>Reload Profiles</strong> in the same menu. See <a href="profiles.html">Profiles and Regions</a>.</li>
+<li><strong>Choose regions.</strong> <strong>Choose Regions…</strong> opens Settings → General. Only the profile's default region is listed at first. Choose the default region from the listed ones, and add another with the pop-up and <strong>Add</strong>: a region MicroVMs aren't known to run in is checked before it's added.</li>
+<li><strong>Choose a default image.</strong> <strong>Choose an Image…</strong> opens Settings → Images. Choose the default image for new workspaces: one of your images, or the starter image, built with the defaults for the size you choose. <strong>New Image…</strong> has every value and the Dockerfile. See <a href="images.html">Images</a>.</li>
+<li><strong>New workspace.</strong> <strong>New Workspace…</strong> opens the workspace editor.</li>
+</ul>
+<h2>Optional, in Settings</h2>
+<ul>
+<li><strong>Network.</strong> Quick start needs nothing here: MicroVMs reach the internet through AWS's own connector, shown as <strong>Internet egress</strong> and marked <strong>Built-in</strong>. A VPC connector is for Advanced use and for persistent storage, and needs a VPC with a NAT gateway of your own. See <a href="networks.html">Network Connectors</a>.</li>
+<li><strong>Storage.</strong> A file system on one of your VPC connectors, for a persistent <code>/workspace</code>. See <a href="persistent-workspace-reference.html">Persistent /workspace</a>.</li>
+<li><strong>GitHub.</strong> <strong>Sign In to GitHub…</strong>, then <strong>Add Another GitHub Account…</strong> once one is signed in. See <a href="github.html">GitHub</a>.</li>
+<li><strong>General → New workspaces.</strong> How new workspaces sign in to Claude Code (a token, an Anthropic API key, or Amazon Bedrock) and to Codex (ChatGPT in the MicroVM, or an OpenAI API key). Each workspace can change them.</li>
+<li><strong>General → Permissions.</strong> <strong>Check Permissions</strong> is a read-only check of what your AWS identity can do, with a minimal IAM policy to copy if something's missing.</li>
+</ul>
+<h2>The starter image</h2>
+<p>The starter image has git, tmux, gh, the AWS CLI, Node 22, Claude Code and Codex, and a user called <code>dev</code>. It's built once in your AWS account and takes about 5 minutes. Its size is 1 vCPU · 2 GB unless you choose another; see <a href="images.html">Images</a>. Before you press <strong>Build</strong>, the sheet lists what it makes in AWS: an S3 bucket for the recipe, an IAM role for the build, and the image. Closing the sheet doesn't stop the build. Build or update it later in Settings → Images.</p>
+<p>Any of your images in the region can be the default instead: the starter image is simply the quickest way to start.</p>
+<h2>Your first workspace</h2>
+<p>A workspace is a saved recipe for a MicroVM. Press <strong>+</strong> next to Workspaces in the main window, give it a name, check the profile, region and image, and choose <strong>Save</strong>: <strong>Quick start</strong> needs nothing more. Then press <strong>Launch</strong> on it: the MicroVM starts, setup runs, and the terminal connects.</p>
+<p>Everything else is in Settings. General has the profile's regions, what new workspaces start with, the permission check and the guardrails; Network Connectors, Images and Storage have the profile's connectors, images and file systems. GitHub, Secrets and Terminal are the same for every profile.</p>
+<div class="pager"><a href="persistent-workspace.html">← A workspace that keeps its files</a><a href="profiles.html">Profiles and Regions →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

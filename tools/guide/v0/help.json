@@ -1,0 +1,1316 @@
+[
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "MicroVM Studio starts AWS Lambda MicroVMs from workspaces you set up, and gives each one a terminal on your Mac."
+      },
+      {
+        "kind" : "heading",
+        "text" : "What you need"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "An AWS account in a region with Lambda MicroVMs: us-east-1, us-east-2, us-west-2, eu-west-1 or ap-northeast-1."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "An AWS profile on this Mac, in `~\/.aws\/config` or `~\/.aws\/credentials`. Settings can make one for IAM Identity Center."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Setting up"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Until you save a workspace, the main window shows **Get started**: a short checklist. Each line is ticked once it's done, says what it's set to, and has a button that opens Settings on the right tab. Do them in any order, and come back to any of them later in Settings. Once a workspace is saved, the checklist is gone for good."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Add an AWS profile.** **Add a Profile…** opens Settings → General. In the **AWS profile** menu at the top, **Add a Profile…** saves a profile for IAM Identity Center and signs you in in your browser. Using access keys? Run `aws configure` in Terminal, then choose **Reload Profiles** in the same menu. See Profiles and Regions."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Choose regions.** **Choose Regions…** opens Settings → General. Only the profile's default region is listed at first. Choose the default region from the listed ones, and add another with the pop-up and **Add**: a region MicroVMs aren't known to run in is checked before it's added."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Choose a default image.** **Choose an Image…** opens Settings → Images. Choose the default image for new workspaces: one of your images, or the starter image, built with the defaults for the size you choose. **New Image…** has every value and the Dockerfile. See Images."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**New workspace.** **New Workspace…** opens the workspace editor."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Optional, in Settings"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Network.** Quick start needs nothing here: MicroVMs reach the internet through AWS's own connector, shown as **Internet egress** and marked **Built-in**. A VPC connector is for Advanced use and for persistent storage, and needs a VPC with a NAT gateway of your own. See Network Connectors."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Storage.** A file system on one of your VPC connectors, for a persistent `\/workspace`. See Persistent \/workspace."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**GitHub.** **Sign In to GitHub…**, then **Add Another GitHub Account…** once one is signed in. See GitHub."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**General → New workspaces.** How new workspaces sign in to Claude Code (a token, an Anthropic API key, or Amazon Bedrock) and to Codex (ChatGPT in the MicroVM, or an OpenAI API key). Each workspace can change them."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**General → Permissions.** **Check Permissions** is a read-only check of what your AWS identity can do, with a minimal IAM policy to copy if something's missing."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The starter image"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The starter image has git, tmux, gh, the AWS CLI, Node 22, Claude Code and Codex, and a user called `dev`. It's built once in your AWS account and takes about 5 minutes. Its size is 1 vCPU · 2 GB unless you choose another; see Images. Before you press **Build**, the sheet lists what it makes in AWS: an S3 bucket for the recipe, an IAM role for the build, and the image. Closing the sheet doesn't stop the build. Build or update it later in Settings → Images."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Any of your images in the region can be the default instead: the starter image is simply the quickest way to start."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Your first workspace"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A workspace is a saved recipe for a MicroVM. Press **+** next to Workspaces in the main window, give it a name, check the profile, region and image, and choose **Save**: **Quick start** needs nothing more. Then press **Launch** on it: the MicroVM starts, setup runs, and the terminal connects."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Everything else is in Settings. General has the profile's regions, what new workspaces start with, the permission check and the guardrails; Network Connectors, Images and Storage have the profile's connectors, images and file systems. GitHub, Secrets and Terminal are the same for every profile."
+      }
+    ],
+    "id" : "getting-started",
+    "title" : "Getting Started"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "MicroVM Studio works with any number of AWS profiles, and keeps separate settings for each. There's no default profile: Settings shows one profile at a time, and the profile it shows is the one new workspaces start on."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The profile switcher"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The top of Settings → General, Network, Images and Storage says **AWS profile:**, with the profile's name and badge in its own colour. Open it to choose another profile, or **Add a Profile…** to sign in with IAM Identity Center. The menu ticks the profile shown. **Reload Profiles** reads `~\/.aws` again, after `aws configure` or an edit of your own. Beside the menu, the profile says **Signed in** or **Sign-in needed**, with **Sign In…** for an IAM Identity Center profile; in the menu, the other profiles say what the last listing found. Every one of those tabs follows the switcher, so you always know whose settings you are changing. In General, the sections under **All profiles** (New workspaces, Notifications and Updates) don't follow it: they apply to every profile."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "These belong to one profile: its regions to list, its default region, its network connectors, its images and its file systems. GitHub, Secrets and Terminal are the same for every profile."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The main window's sidebar groups workspaces under their profile's badge, and nothing is hidden when you change the profile in Settings. A workspace has its own profile, which the workspace editor can change: its Region menu then offers the regions listed for that profile, whichever profile Settings shows."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Regions to list"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Settings → General → **Regions to list** shows the regions you added, each with **Remove**, and one pop-up with **Add** for another region. A profile lists only its default region until you add more. Choose the **Default region** from the listed ones: it is always listed, so it can't be removed."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "The pop-up offers every AWS region. The ones MicroVMs are known to run in say **MicroVMs available** and are added at once."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Any other region is checked when you press **Add**, with one harmless call to Lambda MicroVMs there. If that works, the region is added."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "If MicroVMs aren't there, the message says **Lambda MicroVMs aren't available in** the region, and nothing is added."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "If the check couldn't be made, such as when the sign-in has expired or a permission is missing, the message says so, and **Add Anyway** adds the region regardless."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Regions listed here are the ones the main window and the menu bar list, and the ones the other tabs offer. See Troubleshooting for what to do when a region won't add."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Settings from older versions"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The profile that was the default opens first in Settings, with the regions to list and the default region it had. Every other profile starts with its own default region listed, and nothing else."
+      }
+    ],
+    "id" : "profiles",
+    "title" : "Profiles and Regions"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "A workspace says how to start a MicroVM and what to put in it. The editor has two views, chosen at the top: **Quick start** and **Advanced**. They are two views of the same workspace."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Quick start"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Quick start asks for the name, the AWS profile (the one Settings is showing), the image, the repos and GitHub access, and how Claude Code and Codex sign in. Everything else takes a default, which the note under the fields spells out: internet egress, no persistent storage, suspend after 5 minutes idle, terminate after 8 hours suspended, up to 8 hours in total, and resume on connect."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Quick start never changes a value it doesn't show. A workspace that has values only Advanced shows opens in Advanced, and in Quick start a note names them."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Advanced"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Advanced shows everything:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**General:** the name, AWS profile, region and image. The Region menu offers the regions listed for the workspace's own profile. The Image menu shows each image's architecture and size. Under it, the chosen image's region, and whether it supports a persistent `\/workspace` and mounts it while the MicroVM starts. Changing the AWS profile keeps the region if the new profile lists it, else moves to that profile's default region; the image becomes that region's default image, and the AWS role is cleared, because a role belongs to the old profile's account."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Time limits:** **Max duration**, **Suspend when idle**, **Terminate after suspended for** and **Resume on connect**. Each time is a number with Minutes or Hours, and a pop-up of shortcuts, so any whole value works: the max duration from 1 minute to 8 hours, and the other two from 1 minute up to the max duration. Suspend when idle can also be Off. After the max duration the MicroVM is terminated, even if you're still working in it. A value outside the limits is explained beside its field."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Behaviour:** **Keep the session when you disconnect (tmux)** and **Run as root**. See Terminals and Sessions."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**GitHub:** access, and the repos to clone. The **Access** menu can also sign in to GitHub, or add another account. See GitHub."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**AWS role:** the role the MicroVM runs as."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Network connector:** where the MicroVM leaves through. **Internet (default)** is AWS's own egress and needs no VPC. Or choose one of the profile's VPC network connectors in the workspace's region: it reaches that VPC, and needs a NAT gateway there for internet. With persistent storage the choice is the file system's own connector, shown and greyed. See Network Connectors."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Storage:** an optional persistent `\/workspace`."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Claude Code:** how Claude Code signs in."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Codex:** how Codex signs in. See Codex."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Secrets:** each goes into an environment variable, or into a file only you can read. Their values stay in this Mac's Keychain, never in the workspace; manage them in Settings → Secrets."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Files to copy:** small files from this Mac, such as `~\/.gitconfig`."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Setup commands:** one per line. They run after the repos are cloned, and once they succeed they don't run again in that MicroVM."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Start command:** runs when the session starts, for example `claude` or `codex`. Leave it empty for a plain shell."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Launching"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Press the ▶ button on the workspace's row in the sidebar or **Launch** on its page, or choose **Launch** from its right-click menu or the **MicroVM** menu. The MicroVM starts, then setup runs and its terminal connects."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "If it takes longer than 90 seconds to start, that isn't an error. The sidebar and the terminal say it's **taking longer than usual**, and MicroVM Studio keeps checking every 5 seconds until the MicroVM runs or stops. This can happen when it mounts storage or the image is large."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "If the workspace already has a MicroVM that's running, starting or suspended, MicroVM Studio asks first. Open one of those, named by when it started and its state (a suspended one is resumed), choose **Start a New MicroVM**, or **Cancel**. With more than two, it offers the newest; the others are in the sidebar."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The sidebar"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Workspaces are grouped under their profile's badge. Each lists its MicroVMs under it, newest first. **Other MicroVMs** holds the ones no saved workspace launched. **Show:** at the bottom chooses between **Active only**, **Active and recently terminated** (in the last 10 minutes) and **Active and all terminated**. The list refreshes every minute; ⌘R refreshes it now."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The MicroVM menu"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The **MicroVM** menu acts on what's selected in the sidebar: **Launch** and **Edit Workspace…** for a workspace (or a MicroVM's workspace), and **Connect**, **Disconnect**, **Suspend**, **Resume**, **Terminate…**, **Upload…**, **Download…** and **History** for a MicroVM. An item that doesn't apply is dimmed. **Refresh** and **Focus Sidebar** are in the View menu, with **Show Sidebar** and **Hide Sidebar**, and **New Workspace…** (⌘N) is in the File menu."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Editing"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Press the pencil button on the workspace's row in the sidebar, beside ▶; or press **Edit…** on its page, or choose it from its right-click menu. **Cancel** asks before it discards changes. The image, role, storage, network, max duration, and when the MicroVM suspends and is terminated, are set when a MicroVM launches, so changes to them apply to the next one. Credentials and repos are brought up to date each time a MicroVM from the workspace connects. Files to copy and setup commands run only once per MicroVM."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Deleting"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **Delete…** from the workspace's right-click menu, or **Delete Workspace…** in the editor. Only the saved workspace goes. Its MicroVMs keep running and move to Other MicroVMs, where they connect as plain shells. Its secrets stay saved and its AWS role stays in your account. With a persistent `\/workspace`, its folder and files stay on the file system."
+      }
+    ],
+    "id" : "workspaces",
+    "title" : "Workspaces"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "A MicroVM runs from an image built in your AWS account. The image decides what's installed, and the MicroVM's size and architecture. Settings → Images lists the images in a profile and region, builds new ones and updates them."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The list"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The tab is for the profile Settings shows (the switcher at the top). Choose the region from the profile's listed regions."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Default image for new workspaces** is kept for each profile and region: the tab shows, and sets, the default image of the region it is showing. A new workspace starts in the profile's default region, on that region's default image; change the region in the workspace editor and the image becomes that region's default."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Starter image** says whether the starter image is built there, with **Build Starter Image…** or **Update Starter Image…**. Its sheet asks only for the size; **New Image…** has every value."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Your images** shows each image's version, architecture, size and price, and the workspaces that use it. **Refresh** lists them again. An image MicroVM Studio built says **Up to date**, or **A newer recipe is available: choose Update…**. Others say **Not built by this app**. One built from your own Dockerfile says so."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**AWS base images** are listed for reference: images are built on them, and they can't be run themselves."
+      },
+      {
+        "kind" : "heading",
+        "text" : "New Image…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**New Image…** opens a sheet with two views, **Quick start** and **Advanced**, the way the workspace editor does."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Quick start images"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A name, a region and a size. Everything else takes the default: ARM64, git, GitHub CLI, tmux, Node.js 22, Python 3, the AWS CLI, Claude Code, Codex and the EFS tools, all OS capabilities, and the mount at launch. It keeps the EFS tools and the mount, so a quick start image still works if you turn on persistent storage later."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Name:** letters, digits, hyphens and underscores, up to 64."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Region:** one of the profile's listed regions. The first build in a region makes its S3 bucket."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Size:** see below."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Advanced images"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Every value, with everything it offers shown:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Base image version:** the latest by default, or a version of AWS's base image in that region."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Architecture:** ARM64, or x86-64 where the base image version supports it. One it doesn't is greyed, with why."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Size:** all five, see below."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Packages:** git, GitHub CLI, tmux, Node.js 22, Python 3, AWS CLI, Claude Code, Codex and EFS tools, each with what it adds. A package another one needs stays ticked while that one is: Codex needs Node.js."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Extra setup:** shell lines, run as root while the image is built, after the packages are installed."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**All OS capabilities** and **Mount \/workspace at launch:** see below."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Dockerfile:** see below."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Use it as the default image for new workspaces.**"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Before **Build**, the sheet lists what it creates, with their tags: the S3 bucket and the recipe in it, the IAM role for the build and its policies, and the image. AWS writes the build's log to CloudWatch. Closing the sheet doesn't stop the build."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The Dockerfile"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The last section of Advanced shows the Dockerfile the build uploads. While you only use the choices above it, the file is written from them and changes as they do. Type in it and it becomes yours: the build uploads exactly your text, and the choices that write it (packages, extra setup, mount at launch) lock. **Reset to Generated** goes back to the file the choices write."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The file must not be empty, must start with `FROM` (comments and blank lines may come first), and must fit the size the build upload allows; the sheet says in plain words what's wrong. **What you control and what the build call keeps** lists the rules:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "The base image comes from the build settings, not your `FROM` line; your `FROM` line starts your file and has to be a public image with a build for the architecture you chose."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Everything after `FROM` is yours: packages, users, tools, settings, `ENTRYPOINT` and `CMD`."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "The upload holds only the Dockerfile, so `COPY` and `ADD` have no files next to it. Use `RUN` to download or write files."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Architecture, size and OS capabilities are build settings, not part of the file. Storage also needs amazon-efs-utils installed by your file."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Mount at launch needs the app's listener in your file. The generated file downloads it while the image builds, from MicroVM Studio's site, and checks it against a sha256 the app pins, so a file that changed fails the build. MicroVM Studio never adds it to a file you wrote: keep the generated listener lines (the `RUN` that downloads it and the `CMD` that starts it), or turn Mount at launch off. A Dockerfile saved by an older version, with the listener written into it as one long base64 line, still works."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Sizes"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "An image's size sets the vCPUs and memory of every MicroVM made from it, and so what it costs: CPU follows memory. These are the five sizes, with their compute price an hour while running in us-east-1; the sheet shows the price in the image's own region."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "1 vCPU · 2 GB (≈ $0.13\/h)"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "2 vCPU · 4 GB (≈ $0.25\/h)"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "4 vCPU · 8 GB (≈ $0.50\/h)"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "8 vCPU · 16 GB (≈ $1.01\/h)"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "16 vCPU · 32 GB (≈ $2.02\/h)"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The starter image is 1 vCPU · 2 GB unless you choose another. Your AWS account's memory quota counts each MicroVM's size, per architecture: see Memory quota reached in Troubleshooting."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "An image with Claude Code or Codex keeps them in its MicroVMs' memory, because a MicroVM reads its disk slowly the first time: they start in a second or two instead of 12 to 35. That takes about 330 MB of the MicroVM's memory for each, which nothing else can use. To give it back, add `: > \/etc\/microvm-studio\/keep-in-memory` to the image's extra setup."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Persistent \/workspace in an image"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**All OS capabilities:** root in its MicroVMs gets every Linux capability, which mounting a persistent `\/workspace` needs. With it on, EFS tools are always installed. A workspace set to **Run as root** then has full control of its MicroVM. Without it, workspaces using the image can't keep `\/workspace` on a file system."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Mount \/workspace at launch:** a small listener in the image (its lifecycle hooks) mounts `\/workspace` as each MicroVM starts, so it's ready when you connect. Without it, `\/workspace` is mounted when the terminal connects."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Both are on in the starter image and in Quick start images. The row of an image MicroVM Studio built says when one is missing."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Update…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Update…** opens the recipe of an image MicroVM Studio built. Change it, then **Update** builds a new version under the same name and region; a new name or region would make another image. If nothing changed, the image is already up to date. AWS keeps only a hash of the extra setup, so if this Mac doesn't have it, type it again, or leave it empty to build without it."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Delete…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Delete…** deletes the image and all its versions in its region. MicroVMs already running from it keep running, and it can't be undone. An image a saved workspace uses can't be deleted: choose another image for the workspace first. Deleting the default image for new workspaces leaves no default. AWS base images can't be deleted."
+      }
+    ],
+    "id" : "images",
+    "title" : "Images"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "heading",
+        "text" : "One window"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "MicroVMs open in the main window, never in windows of their own. Select a MicroVM in the sidebar to see its terminal. The others keep their sessions out of sight, screen and scrollback included. The header shows the MicroVM's state and time left, and its buttons: **Suspend** or **Resume**, **Terminate…**, **Disconnect**, **History**, **Upload…** and **Download…**. In a narrow window the last three are in a **More** menu. The **MicroVM** menu has them all."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Setup"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Each time a workspace's MicroVM connects, the pane ticks off its setup: mounting `\/workspace` with persistent storage, copying files, adding credentials, cloning repos and running setup commands. **Cancel** stops setup at any step and closes the connection. The pane then offers **Close**, **Open Shell Anyway** and **Try Again**. Escape doesn't cancel, so a key meant for the terminal can't stop setup. When a step fails, see Troubleshooting."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Keep session (tmux)"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Keep the session when you disconnect (tmux)**, in the workspace's Behaviour section, is on for new workspaces. Reconnecting returns to the same tmux session, with everything still running in it, and a dropped connection reconnects by itself: it tries 8 times over about two minutes, and **Reconnect Now** skips the wait. The image needs tmux; the starter image has it. Plain shells in Other MicroVMs, and **Open Shell Anyway**, don't keep their shell."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Splits"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Split Right** (⌘D) and **Split Down** (⇧⌘D), in the File menu, open another shell beside or below the one you're in. With Keep session, it joins the same tmux session in a tmux window of its own."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Close Pane** (⇧⌘W) closes the pane you're in. It asks first when the pane's shell isn't kept in tmux, because the shell ends with it."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Next Pane** (⌘]) and **Previous Pane** (⌘[) move between panes."
+      },
+      {
+        "kind" : "heading",
+        "text" : "⌘W"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "While a terminal is shown, ⌘W is **Disconnect**. When every pane keeps its shell in tmux, it disconnects without asking; otherwise it asks first, because the shells end and anything running in them stops. With no terminal shown, ⌘W closes the window. Neither terminates the MicroVM: it keeps running, and billing. Closing the window and quitting ask in the same way. In these questions Return and Escape both cancel."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Disconnect and reconnect"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Disconnect**, in the header or the MicroVM menu, does what ⌘W does: it closes the terminal and leaves the MicroVM running. It doesn't reconnect by itself: press **Connect**. When a shell exits or the connection drops, the pane says so, and **Reconnect** connects again: with Keep session you're back in the same tmux session, and without it you get a new shell."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "After the Mac wakes, MicroVM Studio checks each connection straight away, so a dead one shows up quickly. With Keep session, a dropped connection also reconnects as soon as the network comes back."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Idle and suspend"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Three settings in the workspace's Time limits section decide what happens while no terminal is connected. Idle means just that: work running inside the MicroVM doesn't count."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Suspend when idle:** Off, or any time from 1 minute up to the max duration, typed in minutes or hours; the pop-up has shortcuts of 5, 15, 30 or 60 minutes. New workspaces suspend after 5 minutes. Off keeps the MicroVM running, and billing, while no terminal is connected, until its max duration. Otherwise AWS suspends it after that long with no terminal connected, even while something runs in it: everything in it pauses until it resumes."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Terminate after suspended for:** any time from 1 minute up to the max duration; the shortcuts are 1, 4 or 8 hours. A suspended MicroVM that isn't resumed in that time is terminated. New workspaces use 8 hours."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Resume on connect:** on for new workspaces. Connecting resumes a suspended MicroVM. When it's off, a reconnect that happens by itself, such as when a dropped connection comes back after your Mac wakes, leaves the MicroVM suspended: the pane says **This MicroVM is suspended**, and **Resume and Reconnect** resumes it. Connecting yourself, or choosing **Resume**, always resumes it."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The last two apply only while Suspend when idle is on. Workspaces saved before these settings keep what they did: **Keep working when detached** on became Suspend when idle Off, and off became 5 minutes."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Suspend** and **Resume** in the header act straight away. Resuming starts billing again."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Every MicroVM stops for good after its max duration, 8 hours at most, and time suspended counts, so it can end a suspended MicroVM sooner. The header counts down, orange under 30 minutes and red under 5. **Terminate…** stops it for good now. Anything not pushed is lost when it stops."
+      },
+      {
+        "kind" : "heading",
+        "text" : "History"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**History** in the header shows what happened to the MicroVM, newest first, each with its time: its launch by MicroVM Studio, running, suspended, resumed and terminated, and terminals connecting and disconnecting. MicroVM Studio records it while it's open, and sees state changes within about a minute. A MicroVM's history is kept for 7 days after it stops."
+      }
+    ],
+    "id" : "terminals",
+    "title" : "Terminals and Sessions"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "heading",
+        "text" : "Upload and download"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Upload…** in the MicroVM's header copies files from this Mac into the MicroVM's home folder: `dev`'s in the starter image, or root's with **Run as root**. A file already there is never overwritten: the copy is numbered, such as `report (1).pdf`."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Drag and drop** files onto the terminal to upload them the same way."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Download…** shows the MicroVM's files, starting in the home folder. Double-click a folder to open it, or use **Home**, **\/workspace** and the up arrow; choose a file and press **Download…**, then say where to save it on this Mac. A path you already know, such as `~\/out.txt`, can be typed instead. A folder with more than 2,000 items shows the first 2,000."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Files always go to the home folder, even with a persistent `\/workspace`; move them there with `mv`. The terminal doesn't need to be connected, and it stays usable while a file copies."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Limits"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "At most **100 MB** per file, either way."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Folders can't be copied.** Zip them first: `zip -r project.zip project` in the MicroVM, or Compress in the Finder."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "One transfer at a time per MicroVM, while it's running. Resume a suspended one first."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "A transfer stops if the MicroVM doesn't answer for 60 seconds."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Cancel** stops a transfer. A file part-way through an upload isn't kept, and a cancelled download saves nothing. In a batch, the files already copied stay, and the result lists them."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Files to copy at launch"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A workspace's **Files to copy** go from this Mac into each new MicroVM the first time it connects. They go to the home folder there, except config files such as `~\/.gitconfig` and `~\/.ssh\/config`, which keep their place. They're limited to 1 MB in total, and copied once per MicroVM: later edits on this Mac don't reach a MicroVM that already has them."
+      }
+    ],
+    "id" : "copying-files",
+    "title" : "Copying Files"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "A workspace reaches GitHub in one of two ways, chosen under **Access** in its GitHub section."
+      },
+      {
+        "kind" : "heading",
+        "text" : "GitHub sign-in"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "In Settings → GitHub, choose **Sign In to GitHub…**. MicroVM Studio shows a code: **Copy Code and Open GitHub**, then approve it in your browser. Then choose **Choose Repos…** to install the GitHub App on the repos your MicroVMs may reach: a sign-in only reaches repos the app is installed on."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Once an account is signed in, the button reads **Add Another GitHub Account…**. It signs in another account too, such as a work one, and keeps the ones you have. GitHub approves the code for the account your browser is using, so switch to the other account on github.com before you enter the code. Each workspace chooses its account under **Access**, whose menu can sign in or add an account too."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "MicroVM Studio has no server. Your sign-in stays on this Mac and goes only to your MicroVMs: the app's author never sees your code, your repos or your token."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "MicroVMs get a short-lived token, at most 8 hours, never your sign-in. MicroVM Studio renews it when needed and sends the new one to the account's running MicroVMs. A sign-in reaches every repo you installed the app on, and can't be read-only: for that, use a token."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Sign Out…** makes this Mac forget the sign-in. MicroVMs keep their current token until it expires; to revoke it at once, use GitHub → Settings → Applications."
+      },
+      {
+        "kind" : "heading",
+        "text" : "A token"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **Token**, then **Paste a Token…**, or **Import from gh…** to copy the GitHub CLI's login. The token is saved in this Mac's Keychain. A fine-grained token limited to the repos the workspace needs is safest; a gh login is broad and doesn't expire."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Repos"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Add Repo** takes `owner\/name` and an optional branch; **Browse Repos…** lists the repos your access reaches, to tick. Each repo is cloned when a MicroVM connects, if it isn't there yet: into your home folder, or into `\/workspace` with persistent storage."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Inside the MicroVM, git gets the token through a credential helper and gh through `GH_TOKEN`. Both are refreshed each time a terminal connects."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Check Connection"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Check Connection** checks the access and each repo from this Mac, without touching any MicroVM. It shows who you're connected as, and for each repo **Can push**, **Read-only**, **Public** or **Not found**."
+      }
+    ],
+    "id" : "github",
+    "title" : "GitHub"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "The starter image has Claude Code installed. Choose how it signs in under **Sign-in** in the workspace's Claude Code section. Set the start command to `claude` to open it when the session starts."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Sign In with Claude"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **Token from claude setup-token**, then **Sign In with Claude…**. It runs `claude setup-token` on this Mac, so Claude Code must be installed here too. Finish signing in in your browser, and the token is saved in this Mac's Keychain without being shown. Or save a token you made elsewhere as a secret. The MicroVM gets it as `CLAUDE_CODE_OAUTH_TOKEN`."
+      },
+      {
+        "kind" : "heading",
+        "text" : "An Anthropic API key"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **Anthropic API key**, and pick the secret that holds your Anthropic API key. The MicroVM gets it as `ANTHROPIC_API_KEY`."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Claude tokens and API keys can't be limited or made short-lived."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Amazon Bedrock"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **Amazon Bedrock** and no Anthropic secret goes into the MicroVM. Claude Code uses Bedrock in the workspace's region through the workspace's AWS role, which needs permission to call Bedrock. With no role chosen, **Create a Role for Bedrock…** makes one. If Claude Code says a model isn't available, check model access in the Bedrock console for that region."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Settings → General → **New workspaces** chooses between a token and Bedrock for new workspaces. For Codex, see Codex."
+      }
+    ],
+    "id" : "claude-code",
+    "title" : "Claude Code"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "The starter image has Codex installed. Choose how it signs in under **Sign-in** in the workspace's Codex section, after Claude Code's. New workspaces start with **None**, unless Settings → General → **New workspaces** chooses a Codex sign-in for them. Set the start command to `codex` to open it when the session starts."
+      },
+      {
+        "kind" : "heading",
+        "text" : "An OpenAI API key"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **OpenAI API key**, and pick the secret that holds your key, or **New Secret…** to add one. The key stays in this Mac's Keychain and goes only to your MicroVMs. Codex in the MicroVM gets it as `OPENAI_API_KEY`. A project key you can revoke is safest."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Sign in with ChatGPT"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose **Sign in with ChatGPT in the MicroVM**. When you connect and Codex isn't signed in yet, the terminal runs `codex login --device-auth`, which shows a link and a code: open the link on any device, sign in, and enter the code. It all happens in the MicroVM, so no secret from this Mac goes into it. Press Control-C to skip it for now."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "With a persistent `\/workspace`, Codex keeps its sign-in in `\/workspace\/.codex`, so new MicroVMs from the workspace stay signed in, and no other workspace can reach it. Without one, each new MicroVM asks you to sign in again."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The image needs Codex"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The starter image has it. One built before it did says **A newer recipe is available.** in Settings → Images: update it there. For an image of your own, tick **Codex** under Packages in Settings → Images. When the chosen image was built by MicroVM Studio without Codex, the Codex section says so. An image built elsewhere can't be checked: if Codex is missing when you connect, the terminal says **Codex isn't installed in this image, so it can't sign in.**"
+      }
+    ],
+    "id" : "codex",
+    "title" : "Codex"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "A MicroVM runs as its workspace's AWS role, chosen in the **AWS role** section. AWS keeps its credentials fresh, and every process in the MicroVM can use them; none are written to files. Only roles that Lambda can use are listed, or choose **Paste an ARN…**."
+      },
+      {
+        "kind" : "heading",
+        "text" : "New Role…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**New Role…** opens **New AWS Role**. The name starts with `MicroVMStudio-`. Add what the role may do:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Amazon Bedrock (for Claude Code)**: calling Claude models on Bedrock."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Read-only access to this account**: the AWS managed policy ReadOnlyAccess, which can also read data such as S3 objects."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Your own policy**: JSON with a `Statement`."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Every role can write the MicroVM's logs to CloudWatch. The sheet shows the exact trust policy, permissions and tags before **Create Role**. A new role can take a minute to work; launching waits and tries again."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "If a role with that name was made by MicroVM Studio, **Create Role** updates it to match the sheet. If someone else's role has the name, choose another. MicroVM Studio doesn't edit or delete roles afterwards: use the IAM console."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Create a Role for Bedrock…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "When Claude Code uses Amazon Bedrock and no role is chosen, the Claude Code section offers **Create a Role for Bedrock…**: the same sheet, with Bedrock already ticked."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Your own permissions"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Making roles needs IAM permissions of your own: the permission check calls them **Use and create IAM roles**. A persistent `\/workspace` needs a role of the workspace's own; see Persistent \/workspace."
+      }
+    ],
+    "id" : "aws-roles",
+    "title" : "AWS Roles and Bedrock"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "A network connector decides where a MicroVM's network traffic leaves. Settings → Network lists, under **Network Connectors**, the connectors of the profile Settings is showing, in one of its regions:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Internet egress:** AWS's own managed connector, first in the list and marked **Built-in**. It needs no VPC, NAT gateway or connector of yours, and there is nothing to create. It doesn't support persistent storage (EFS). A workspace uses it unless you choose another."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**VPC connectors:** connectors in your own VPC, after it. One needs a VPC with a NAT gateway for internet, and security groups. It supports persistent storage (EFS)."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "You bring your own VPC, subnets and NAT gateway: MicroVM Studio makes none of them. A MicroVM on a VPC connector gets a private address, never a public IP, so it reaches the internet only if its subnets route out through a NAT gateway. Without that route, GitHub, package installs, Claude Code and Codex won't work in it."
+      },
+      {
+        "kind" : "heading",
+        "text" : "New Connector…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Under the list, choose **New Connector…** and give it a name (letters, digits and hyphens, up to 40). It uses the Settings profile and the region chosen in the tab. Then choose:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**VPC:** one of the profile's VPCs in that region. Without one, create a VPC with a NAT gateway first."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Subnets:** at least one. A subnet in an Availability Zone MicroVMs can't use, such as use1-az3, is shown and can't be ticked."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Security group:** **Create new**, which has no inbound rules and allows all outbound traffic, or **Use existing**, one of the VPC's groups. MicroVM Studio never changes or deletes a group you choose."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Operator role:** the role Lambda assumes to make the connector's network interfaces in your VPC. **Create new** makes `MicroVMStudio-NetworkConnectorOperator` once per account, and MicroVM Studio never deletes it. **Use existing** lists the roles Lambda can assume; the sheet checks with the IAM policy simulator that the role may create network interfaces, and warns if it can't, or says it couldn't check."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Before **Create**, the sheet lists what it makes, tagged. The connector takes a few minutes and has no published price. Closing the sheet doesn't stop it, and **Resume** picks up one that stopped part way."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Creating a connector with an existing role needs your AWS identity to be allowed to read the role and pass it to Lambda. The minimal policy in the permission check lets you read any role, but lists for passing only the roles your workspaces and connectors already use: add a new role's ARN to its pass-role statement before you create the connector."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The list"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The list shows every connector in the region: the built-in one, those MicroVM Studio made, marked **Made by this app**, and any others in the account. MicroVM Studio only shows the others, and never changes or deletes them. **View…** shows a connector's details: its VPC, health, subnets, security group and role, and the file systems and workspaces that use it. A row's **…** menu has **Change Subnets…** and **Delete…**. **Used by** counts the file systems and workspaces on it; point at it for their names. **Refresh** lists the connectors again."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Two profiles of the same AWS account list the same connectors. One made under the other profile says **Left over by this app** here, though it isn't: manage it from the profile that made it. **Delete…** refuses it while that profile still has it."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Change Subnets…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Change Subnets…** moves a connector onto other subnets of its VPC: it makes a new network connector on them, then deletes the old one, in about 5 minutes. MicroVMs already running on it may lose their connection: relaunch them. File systems on it keep their mount targets, and may need new ones in new zones: their View… offers **Add Mount Targets**. A change that stops part way says so beside the connector, with **Try Again**."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Made by an earlier version"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Networks made by versions 0.2.0 and 0.2.1, including ones with a NAT gateway MicroVM Studio created, stay and are marked **Made by an earlier version**. They keep working for storage, and still have **View…** and **Delete…**. Change Subnets… is only for those without a NAT gateway: the others use private subnets made for it. Nothing makes a NAT gateway, default VPC or private subnet any more. A NAT gateway costs about $33 a month plus $0.045 per GB of data through it, and its Elastic IP about $3.60 a month (us-east-1 prices; other regions differ). Deleting the network stops both."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Deleting"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Delete…** is refused while a file system is on the connector, or a workspace leaves through it (move those workspaces to Internet egress first). It deletes the connector and, if MicroVM Studio made it, its security group; a group you chose stays. For a network from an earlier version it also deletes everything MicroVM Studio made: the NAT gateway, Elastic IP, route table and private subnets, with the NAT gateway and Elastic IP first so they stop costing even when AWS is slow to release the rest. The IAM role stays, and so does a default VPC: it's AWS's own. MicroVMs already running on the connector lose their network, and it can't be undone. A connector a file system is on can't be deleted: delete the file system first, in Settings → Storage. One that nothing uses, left over from an earlier delete or change, says **Left over by this app** and can be deleted."
+      }
+    ],
+    "id" : "networks",
+    "title" : "Network Connectors"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "paragraph",
+        "text" : "Without it, a MicroVM's files are gone when it stops, apart from what you push. With it, `\/workspace` lives on an Amazon EFS file system and outlives every MicroVM."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Making a file system"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A file system lives on a VPC network connector; see Network Connectors. In Settings → Storage, choose the region at the top, then **New File System…**, name it, and choose its type (Amazon EFS, the only one today) and the **Network connector**: one that exists in that region, never a new one. No connector yet? **Open Network Connectors** takes you to Settings → Network to make one. The file system gets a mount target in each Availability Zone of the connector's subnets."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The **Security group** for the mount targets is **Create new**, which lets NFS in from the connector's security group only, or **Use existing**. For an existing group, MicroVM Studio adds the NFS rule (TCP 2049 from the connector's security group) if it's missing, and tells you it did. It deletes a group only if it made it; for one of yours, it removes at most the rule it added, and only with the last file system that uses it. If your group also lets NFS in from other groups, the sheet warns you that the file system would be reachable from there too. A connector can't use a client security group another connector already has."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Before **Create**, the sheet lists what it makes: the group if new, and the encrypted EFS file system. It takes about 2 minutes, and closing the sheet doesn't stop it. **Resume** picks up a create that stopped. **Refresh** checks the file systems against AWS again, as opening the tab does."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Using it"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Choose the file system under **Persistent \/workspace** in the workspace's Storage section. Each workspace gets its own folder on it, which no other workspace can reach, mounted at `\/workspace`. Repos are cloned there, and the terminal and start command open there."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The workspace's image needs **All OS capabilities** and EFS tools; the starter image has both. With **Lifecycle hooks** in the image too, as in the starter image, `\/workspace` is mounted while the MicroVM starts, so it's ready when you connect; that makes the launch about 12 seconds longer. Without them, it's mounted when the terminal connects. Either way, each connect checks the mount and repairs it if needed. See Images."
+      },
+      {
+        "kind" : "heading",
+        "text" : "A role of its own"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Root in the MicroVM can use the workspace's role, so the role must reach this workspace's folder and nothing else. Persistent `\/workspace` therefore needs a role made by MicroVM Studio that no other workspace uses: choose **New Role…**. Saving the workspace lets the role into its folder, and the file system's policy keeps everyone else out of it. The role stays this workspace's for good, even once the workspace is deleted, so no other workspace can take it."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A role that can change file system policies or its own permissions (PowerUserAccess or AdministratorAccess can) could undo those rules. A MicroVM reaches every file system on its network, so such a role may only keep `\/workspace` on a network where no other workspace keeps its own, and no other workspace may join a file system on that network. The same goes for a workspace that only leaves through the connector, with no storage of its own: it is on that network too, so with a role like that it can't use a connector another workspace keeps `\/workspace` behind (choose Internet, or a connector of its own). Connectors that share one client security group count as one network. Saving checks this with the IAM policy simulator, and Settings → Storage flags a workspace whose role has become able to since."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A MicroVM keeps the storage it was launched with. After changing a workspace's storage, start a new MicroVM to use it."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Internet"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A MicroVM with a persistent `\/workspace` leaves through its file system's connector, so it reaches the internet only if that connector's VPC routes its subnets to a NAT gateway, which you set up in your VPC. Without one, GitHub, package installs, Claude Code and Codex won't work. Settings → Storage shows **Internet: yes** or **Internet: no** for each file system."
+      },
+      {
+        "kind" : "heading",
+        "text" : "View…"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**View…** in Settings → Storage shows the file system's type, network, health, mount targets and their state, and the workspaces using it."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Rename…** changes the name shown on this Mac. Its AWS resources keep theirs."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Add Mount Targets** shows when its connector has subnets in zones it has no mount target in, such as after **Change Subnets…**. MicroVMs there can't reach the file system until you add them."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Costs"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "EFS storage at the region's price: about $0.30 per GB-month in us-east-1, with throughput billed per GB transferred."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Data between the MicroVM and the VPC, at in-region transfer rates."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "The network connector has no published price."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A NAT gateway in your VPC has a cost of its own, which you pay your VPC's account for: see Network Connectors. The menu bar's estimate doesn't include any of these."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Deleting"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "**Delete…** in Settings → Storage, or **Delete File System…** in View…, deletes the file system and every workspace's files on it, and can't be undone. Its network connector stays. Workspaces that used it go back to having no persistent `\/workspace`. Deleting a workspace, or setting its storage to None, keeps its folder: choose the same file system again for that workspace to get its files back."
+      }
+    ],
+    "id" : "persistent-workspace",
+    "title" : "Persistent \/workspace"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "heading",
+        "text" : "The menu bar"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The menu bar icon shows how many MicroVMs are running and roughly what they cost an hour. Its menu lists each MicroVM with its state, time left and cost, and offers **Connect**, **Save Work to a WIP Branch** and **Terminate…**. It refreshes every minute."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The estimate covers compute only, for running MicroVMs, from each image's size at Lambda MicroVM rates; see Images. Suspended MicroVMs count as nothing. EFS, NAT gateways and data transfer aren't included."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Warnings"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Time left:** a notification 30 minutes and 5 minutes before a MicroVM stops, with **Save Work** and **Open**."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Idle:** a notification when a MicroVM has had no shell for a while, with **Terminate** and **Open**. Choose how long, or Never, in Settings → General → Notifications. MicroVMs launched with **Suspend when idle** off are left out: the menu lists them as **Working unattended**."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Warnings are notifications, so allow MicroVM Studio's notifications in System Settings to see them."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Save Work"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "For MicroVMs MicroVM Studio launched from a workspace with repos. For each repo, it pushes your staged, unstaged and untracked changes, and any unpushed commits, to a new branch on `origin` named `wip\/<session>-<date>-<time>` (UTC). Your working tree and branch don't change. A suspended MicroVM is resumed for the save, then suspended again."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Quitting"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Quitting while MicroVMs that MicroVM Studio launched are running lists them: tick the ones to stop, then **Terminate Selected and Quit**, or **Keep All and Quit**. The ones you keep go on running, and billing."
+      }
+    ],
+    "id" : "costs",
+    "title" : "Costs and Guardrails"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "heading",
+        "text" : "Sign-in expired"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "When an AWS sign-in has expired, the main window says **Sign in to AWS**. For an IAM Identity Center profile, choose **Sign In…** and finish in your browser, or run `aws sso login --profile <name>` in Terminal. For a profile with a credential helper, check the helper; for access keys, check `~\/.aws`."
+      },
+      {
+        "kind" : "heading",
+        "text" : "A region isn't listed"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Settings → General → **Regions to list** holds the regions the main window and menu bar list for the profile Settings shows. Only its default region is listed until you add more, and the default region is always listed. If your organization blocks a region, the main window offers **Stop Listing** it."
+      },
+      {
+        "kind" : "heading",
+        "text" : "A region won't add"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Pressing **Add** on a region MicroVMs aren't known to run in checks it first. It says:"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Lambda MicroVMs aren't available in** the region: nothing was added. Choose another region."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Permission needed**: your AWS identity isn't allowed to call `lambda:ListManagedMicrovmImages`, so the region couldn't be checked. Add that permission, or choose **Add Anyway**."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**Sign in to AWS**, or another message about the sign-in or the network: the region couldn't be checked. Sign in again and try once more, or choose **Add Anyway**."
+      },
+      {
+        "kind" : "heading",
+        "text" : "A launch or connect takes a long time"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A MicroVM that takes longer than 90 seconds to start isn't treated as failed. The sidebar says **taking longer than usual**, and the terminal's progress does too, and MicroVM Studio keeps checking every 5 seconds until the MicroVM runs or stops. Mounting storage and a large image are the usual reasons. Nothing needs doing; if it ends up stopped, the message says why."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Memory quota reached"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Your AWS account can't run more MicroVM memory at once: each MicroVM counts its image's size against a quota for its architecture. Terminate a MicroVM, use an image with a smaller size (see Images), or ask AWS for a higher quota. When a launch or a resume hits it, the main window's message has **Open Service Quotas**, which opens the page where you can ask for more. In a terminal pane, the message gives that page's address instead."
+      },
+      {
+        "kind" : "heading",
+        "text" : "\"This MicroVM is suspended\""
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "A pane says this when it reconnected by itself, such as after your Mac woke, and found the MicroVM suspended while its workspace's **Resume on connect** is off. Choose **Resume and Reconnect** to resume it, or turn Resume on connect back on in the workspace's Time limits section."
+      },
+      {
+        "kind" : "heading",
+        "text" : "A setup step failed"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The terminal shows which step failed and its output, with secrets hidden. **Try Again** runs setup again. **Open Shell Anyway** connects once without any setup: no credentials, repos or start command, just the MicroVM's own shell, to look around. It never mounts `\/workspace`, but with persistent storage it opens there when `\/workspace` is mounted already, as an image with lifecycle hooks does at launch; otherwise it opens in your home folder. A missing secret goes in Settings → Secrets. Setup gives up after 15 minutes."
+      },
+      {
+        "kind" : "heading",
+        "text" : "\"This MicroVM can't reach github.com\""
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Setup stops at Cloning repos when the MicroVM has no internet. That happens on a VPC network connector whose subnets don't route out through a NAT gateway, as with a persistent `\/workspace`: add the route in your VPC (see Network Connectors), then launch a new MicroVM. A workspace that doesn't need your VPC can use **Internet (default)** as its network connector. Before it clones, setup gives github.com 10 seconds to answer, and a clone that stalls for 30 seconds fails instead of hanging."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The start command exits"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "If the shell closes within 10 seconds of connecting, the pane says **The shell closed right after it started** and doesn't retry. Edit the workspace's start command, or clear it and run the command by hand to see what it prints."
+      },
+      {
+        "kind" : "heading",
+        "text" : "\"Mounting \/workspace\" failed"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**This image can't mount EFS:** update the starter image in Settings → Images, or choose an image built with **All OS capabilities**."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**It took over a minute:** check that the file system's subnets and security groups still exist, and look at its health and mount targets: **View…** in Settings → Storage."
+      },
+      {
+        "kind" : "bullet",
+        "text" : "**The file system isn't on this Mac any more:** edit the workspace and choose another, or None."
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "With lifecycle hooks, a mount that failed at launch is tried again when the terminal connects; if that fails too, the output says why the first one failed."
+      },
+      {
+        "kind" : "heading",
+        "text" : "Permissions"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "The permission check is in Settings → General → **Permissions**: choose **Check Permissions**. It checks the profile Settings shows, in its default region, and shows what your AWS identity can do, in six groups: **Run MicroVMs**, **Open shells**, **Build images**, **Use and create IAM roles** (optional), **Use VPC network connectors** (optional) and **Keep \/workspace on EFS** (optional). **Copy Policy** copies a minimal IAM policy to add to your user or role. It includes the roles your saved workspaces and connectors use."
+      },
+      {
+        "kind" : "heading",
+        "text" : "No warnings appear"
+      },
+      {
+        "kind" : "paragraph",
+        "text" : "Time-left and idle warnings are notifications: allow them for MicroVM Studio in System Settings → Notifications."
+      }
+    ],
+    "id" : "troubleshooting",
+    "title" : "Troubleshooting"
+  },
+  {
+    "blocks" : [
+      {
+        "kind" : "heading",
+        "text" : "Terminals"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘D: Split Right"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⇧⌘D: Split Down"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⇧⌘W: Close Pane"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘] and ⌘[: Next Pane and Previous Pane"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘W: Disconnect, or close the window when no terminal is shown"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘K: Clear"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘F, ⌘G, ⇧⌘G and ⌘E: Find…, Find Next, Find Previous and Use Selection for Find"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘+, ⌘− and ⌘0: Bigger, Smaller and Actual Size text"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Return, over a pane's message: its main button, such as **Reconnect**, **Try Again** or **Resume and Reconnect**. Setup's **Cancel** has no shortcut, so Escape never stops setup."
+      },
+      {
+        "kind" : "heading",
+        "text" : "The main window"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘N: New Workspace…"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘R: Refresh the list of MicroVMs"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Return on a connected MicroVM in the sidebar: move the keyboard into its terminal"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌥⌘S: Focus Sidebar, to move the keyboard back from a terminal to the list"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Escape, with the keyboard in the list: select nothing"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "Tab moves between controls, as in any window"
+      },
+      {
+        "kind" : "heading",
+        "text" : "The app"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘?: MicroVM Studio Help"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘,: Settings"
+      },
+      {
+        "kind" : "bullet",
+        "text" : "⌘Q: Quit"
+      }
+    ],
+    "id" : "shortcuts",
+    "title" : "Keyboard Shortcuts"
+  }
+]

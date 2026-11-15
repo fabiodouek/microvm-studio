@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Network Connectors · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html" aria-current="page">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Network Connectors</h1>
+<p>A network connector decides where a MicroVM's network traffic leaves. Settings → Network lists, under <strong>Network Connectors</strong>, the connectors of the profile Settings is showing, in one of its regions:</p>
+<ul>
+<li><strong>Internet egress:</strong> AWS's own managed connector, first in the list and marked <strong>Built-in</strong>. It needs no VPC, NAT gateway or connector of yours, and there is nothing to create. It doesn't support persistent storage (EFS). A workspace uses it unless you choose another.</li>
+<li><strong>VPC connectors:</strong> connectors in your own VPC, after it. One needs a VPC with a NAT gateway for internet, and security groups. It supports persistent storage (EFS).</li>
+</ul>
+<p>You bring your own VPC, subnets and NAT gateway: MicroVM Studio makes none of them. A MicroVM on a VPC connector gets a private address, never a public IP, so it reaches the internet only if its subnets route out through a NAT gateway. Without that route, GitHub, package installs, Claude Code and Codex won't work in it.</p>
+<h2>New Connector…</h2>
+<p>Under the list, choose <strong>New Connector…</strong> and give it a name (letters, digits and hyphens, up to 40). It uses the Settings profile and the region chosen in the tab. Then choose:</p>
+<ul>
+<li><strong>VPC:</strong> one of the profile's VPCs in that region. Without one, create a VPC with a NAT gateway first.</li>
+<li><strong>Subnets:</strong> at least one. A subnet in an Availability Zone MicroVMs can't use, such as use1-az3, is shown and can't be ticked.</li>
+<li><strong>Security group:</strong> <strong>Create new</strong>, which has no inbound rules and allows all outbound traffic, or <strong>Use existing</strong>, one of the VPC's groups. MicroVM Studio never changes or deletes a group you choose.</li>
+<li><strong>Operator role:</strong> the role Lambda assumes to make the connector's network interfaces in your VPC. <strong>Create new</strong> makes <code>MicroVMStudio-NetworkConnectorOperator</code> once per account, and MicroVM Studio never deletes it. <strong>Use existing</strong> lists the roles Lambda can assume; the sheet checks with the IAM policy simulator that the role may create network interfaces, and warns if it can't, or says it couldn't check.</li>
+</ul>
+<p>Before <strong>Create</strong>, the sheet lists what it makes, tagged. The connector takes a few minutes and has no published price. Closing the sheet doesn't stop it, and <strong>Resume</strong> picks up one that stopped part way.</p>
+<p>Creating a connector with an existing role needs your AWS identity to be allowed to read the role and pass it to Lambda. The minimal policy in the permission check lets you read any role, but lists for passing only the roles your workspaces and connectors already use: add a new role's ARN to its pass-role statement before you create the connector.</p>
+<h2>The list</h2>
+<p>The list shows every connector in the region: the built-in one, those MicroVM Studio made, marked <strong>Made by this app</strong>, and any others in the account. MicroVM Studio only shows the others, and never changes or deletes them. <strong>View…</strong> shows a connector's details: its VPC, health, subnets, security group and role, and the file systems and workspaces that use it. A row's <strong>…</strong> menu has <strong>Change Subnets…</strong> and <strong>Delete…</strong>. <strong>Used by</strong> counts the file systems and workspaces on it; point at it for their names. <strong>Refresh</strong> lists the connectors again.</p>
+<p>Two profiles of the same AWS account list the same connectors. One made under the other profile says <strong>Left over by this app</strong> here, though it isn't: manage it from the profile that made it. <strong>Delete…</strong> refuses it while that profile still has it.</p>
+<h2>Change Subnets…</h2>
+<p><strong>Change Subnets…</strong> moves a connector onto other subnets of its VPC: it makes a new network connector on them, then deletes the old one, in about 5 minutes. MicroVMs already running on it may lose their connection: relaunch them. File systems on it keep their mount targets, and may need new ones in new zones: their View… offers <strong>Add Mount Targets</strong>. A change that stops part way says so beside the connector, with <strong>Try Again</strong>.</p>
+<h2>Made by an earlier version</h2>
+<p>Networks made by versions 0.2.0 and 0.2.1, including ones with a NAT gateway MicroVM Studio created, stay and are marked <strong>Made by an earlier version</strong>. They keep working for storage, and still have <strong>View…</strong> and <strong>Delete…</strong>. Change Subnets… is only for those without a NAT gateway: the others use private subnets made for it. Nothing makes a NAT gateway, default VPC or private subnet any more. A NAT gateway costs about $33 a month plus $0.045 per GB of data through it, and its Elastic IP about $3.60 a month (us-east-1 prices; other regions differ). Deleting the network stops both.</p>
+<h2>Deleting</h2>
+<p><strong>Delete…</strong> is refused while a file system is on the connector, or a workspace leaves through it (move those workspaces to Internet egress first). It deletes the connector and, if MicroVM Studio made it, its security group; a group you chose stays. For a network from an earlier version it also deletes everything MicroVM Studio made: the NAT gateway, Elastic IP, route table and private subnets, with the NAT gateway and Elastic IP first so they stop costing even when AWS is slow to release the rest. The IAM role stays, and so does a default VPC: it's AWS's own. MicroVMs already running on the connector lose their network, and it can't be undone. A connector a file system is on can't be deleted: delete the file system first, in Settings → Storage. One that nothing uses, left over from an earlier delete or change, says <strong>Left over by this app</strong> and can be deleted.</p>
+<div class="pager"><a href="aws-roles.html">← AWS Roles and Bedrock</a><a href="persistent-workspace-reference.html">Persistent /workspace →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

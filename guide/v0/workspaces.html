@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Workspaces · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html" aria-current="page">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Workspaces</h1>
+<p>A workspace says how to start a MicroVM and what to put in it. The editor has two views, chosen at the top: <strong>Quick start</strong> and <strong>Advanced</strong>. They are two views of the same workspace.</p>
+<h2>Quick start</h2>
+<p>Quick start asks for the name, the AWS profile (the one Settings is showing), the image, the repos and GitHub access, and how Claude Code and Codex sign in. Everything else takes a default, which the note under the fields spells out: internet egress, no persistent storage, suspend after 5 minutes idle, terminate after 8 hours suspended, up to 8 hours in total, and resume on connect.</p>
+<p>Quick start never changes a value it doesn't show. A workspace that has values only Advanced shows opens in Advanced, and in Quick start a note names them.</p>
+<h2>Advanced</h2>
+<p>Advanced shows everything:</p>
+<ul>
+<li><strong>General:</strong> the name, AWS profile, region and image. The Region menu offers the regions listed for the workspace's own profile. The Image menu shows each image's architecture and size. Under it, the chosen image's region, and whether it supports a persistent <code>/workspace</code> and mounts it while the MicroVM starts. Changing the AWS profile keeps the region if the new profile lists it, else moves to that profile's default region; the image becomes that region's default image, and the AWS role is cleared, because a role belongs to the old profile's account.</li>
+<li><strong>Time limits:</strong> <strong>Max duration</strong>, <strong>Suspend when idle</strong>, <strong>Terminate after suspended for</strong> and <strong>Resume on connect</strong>. Each time is a number with Minutes or Hours, and a pop-up of shortcuts, so any whole value works: the max duration from 1 minute to 8 hours, and the other two from 1 minute up to the max duration. Suspend when idle can also be Off. After the max duration the MicroVM is terminated, even if you're still working in it. A value outside the limits is explained beside its field.</li>
+<li><strong>Behaviour:</strong> <strong>Keep the session when you disconnect (tmux)</strong> and <strong>Run as root</strong>. See <a href="terminals.html">Terminals and Sessions</a>.</li>
+<li><strong>GitHub:</strong> access, and the repos to clone. The <strong>Access</strong> menu can also sign in to GitHub, or add another account. See <a href="github.html">GitHub</a>.</li>
+<li><strong>AWS role:</strong> the role the MicroVM runs as.</li>
+<li><strong>Network connector:</strong> where the MicroVM leaves through. <strong>Internet (default)</strong> is AWS's own egress and needs no VPC. Or choose one of the profile's VPC network connectors in the workspace's region: it reaches that VPC, and needs a NAT gateway there for internet. With persistent storage the choice is the file system's own connector, shown and greyed. See <a href="networks.html">Network Connectors</a>.</li>
+<li><strong>Storage:</strong> an optional persistent <code>/workspace</code>.</li>
+<li><strong>Claude Code:</strong> how Claude Code signs in.</li>
+<li><strong>Codex:</strong> how Codex signs in. See <a href="codex.html">Codex</a>.</li>
+<li><strong>Secrets:</strong> each goes into an environment variable, or into a file only you can read. Their values stay in this Mac's Keychain, never in the workspace; manage them in Settings → Secrets.</li>
+<li><strong>Files to copy:</strong> small files from this Mac, such as <code>~/.gitconfig</code>.</li>
+<li><strong>Setup commands:</strong> one per line. They run after the repos are cloned, and once they succeed they don't run again in that MicroVM.</li>
+<li><strong>Start command:</strong> runs when the session starts, for example <code>claude</code> or <code>codex</code>. Leave it empty for a plain shell.</li>
+</ul>
+<h2>Launching</h2>
+<p>Press the ▶ button on the workspace's row in the sidebar or <strong>Launch</strong> on its page, or choose <strong>Launch</strong> from its right-click menu or the <strong>MicroVM</strong> menu. The MicroVM starts, then setup runs and its terminal connects.</p>
+<p>If it takes longer than 90 seconds to start, that isn't an error. The sidebar and the terminal say it's <strong>taking longer than usual</strong>, and MicroVM Studio keeps checking every 5 seconds until the MicroVM runs or stops. This can happen when it mounts storage or the image is large.</p>
+<p>If the workspace already has a MicroVM that's running, starting or suspended, MicroVM Studio asks first. Open one of those, named by when it started and its state (a suspended one is resumed), choose <strong>Start a New MicroVM</strong>, or <strong>Cancel</strong>. With more than two, it offers the newest; the others are in the sidebar.</p>
+<h2>The sidebar</h2>
+<p>Workspaces are grouped under their profile's badge. Each lists its MicroVMs under it, newest first. <strong>Other MicroVMs</strong> holds the ones no saved workspace launched. <strong>Show:</strong> at the bottom chooses between <strong>Active only</strong>, <strong>Active and recently terminated</strong> (in the last 10 minutes) and <strong>Active and all terminated</strong>. The list refreshes every minute; ⌘R refreshes it now.</p>
+<h2>The MicroVM menu</h2>
+<p>The <strong>MicroVM</strong> menu acts on what's selected in the sidebar: <strong>Launch</strong> and <strong>Edit Workspace…</strong> for a workspace (or a MicroVM's workspace), and <strong>Connect</strong>, <strong>Disconnect</strong>, <strong>Suspend</strong>, <strong>Resume</strong>, <strong>Terminate…</strong>, <strong>Upload…</strong>, <strong>Download…</strong> and <strong>History</strong> for a MicroVM. An item that doesn't apply is dimmed. <strong>Refresh</strong> and <strong>Focus Sidebar</strong> are in the View menu, with <strong>Show Sidebar</strong> and <strong>Hide Sidebar</strong>, and <strong>New Workspace…</strong> (⌘N) is in the File menu.</p>
+<h2>Editing</h2>
+<p>Press the pencil button on the workspace's row in the sidebar, beside ▶; or press <strong>Edit…</strong> on its page, or choose it from its right-click menu. <strong>Cancel</strong> asks before it discards changes. The image, role, storage, network, max duration, and when the MicroVM suspends and is terminated, are set when a MicroVM launches, so changes to them apply to the next one. Credentials and repos are brought up to date each time a MicroVM from the workspace connects. Files to copy and setup commands run only once per MicroVM.</p>
+<h2>Deleting</h2>
+<p>Choose <strong>Delete…</strong> from the workspace's right-click menu, or <strong>Delete Workspace…</strong> in the editor. Only the saved workspace goes. Its MicroVMs keep running and move to Other MicroVMs, where they connect as plain shells. Its secrets stay saved and its AWS role stays in your account. With a persistent <code>/workspace</code>, its folder and files stay on the file system.</p>
+<div class="pager"><a href="profiles.html">← Profiles and Regions</a><a href="images.html">Images →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

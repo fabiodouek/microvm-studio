@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Claude Code · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html" aria-current="page">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Claude Code</h1>
+<p>The starter image has Claude Code installed. Choose how it signs in under <strong>Sign-in</strong> in the workspace's Claude Code section. Set the start command to <code>claude</code> to open it when the session starts.</p>
+<h2>Sign In with Claude</h2>
+<p>Choose <strong>Token from claude setup-token</strong>, then <strong>Sign In with Claude…</strong>. It runs <code>claude setup-token</code> on this Mac, so Claude Code must be installed here too. Finish signing in in your browser, and the token is saved in this Mac's Keychain without being shown. Or save a token you made elsewhere as a secret. The MicroVM gets it as <code>CLAUDE_CODE_OAUTH_TOKEN</code>.</p>
+<h2>An Anthropic API key</h2>
+<p>Choose <strong>Anthropic API key</strong>, and pick the secret that holds your Anthropic API key. The MicroVM gets it as <code>ANTHROPIC_API_KEY</code>.</p>
+<p>Claude tokens and API keys can't be limited or made short-lived.</p>
+<h2>Amazon Bedrock</h2>
+<p>Choose <strong>Amazon Bedrock</strong> and no Anthropic secret goes into the MicroVM. Claude Code uses Bedrock in the workspace's region through the workspace's AWS role, which needs permission to call Bedrock. With no role chosen, <strong>Create a Role for Bedrock…</strong> makes one. If Claude Code says a model isn't available, check model access in the Bedrock console for that region.</p>
+<p>Settings → General → <strong>New workspaces</strong> chooses between a token and Bedrock for new workspaces. For Codex, see <a href="codex.html">Codex</a>.</p>
+<div class="pager"><a href="github.html">← GitHub</a><a href="codex.html">Codex →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

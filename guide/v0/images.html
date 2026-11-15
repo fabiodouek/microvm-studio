@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Images · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html" aria-current="page">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Images</h1>
+<p>A MicroVM runs from an image built in your AWS account. The image decides what's installed, and the MicroVM's size and architecture. Settings → Images lists the images in a profile and region, builds new ones and updates them.</p>
+<h2>The list</h2>
+<p>The tab is for the profile Settings shows (the switcher at the top). Choose the region from the profile's listed regions.</p>
+<ul>
+<li><strong>Default image for new workspaces</strong> is kept for each profile and region: the tab shows, and sets, the default image of the region it is showing. A new workspace starts in the profile's default region, on that region's default image; change the region in the workspace editor and the image becomes that region's default.</li>
+<li><strong>Starter image</strong> says whether the starter image is built there, with <strong>Build Starter Image…</strong> or <strong>Update Starter Image…</strong>. Its sheet asks only for the size; <strong>New Image…</strong> has every value.</li>
+<li><strong>Your images</strong> shows each image's version, architecture, size and price, and the workspaces that use it. <strong>Refresh</strong> lists them again. An image MicroVM Studio built says <strong>Up to date</strong>, or <strong>A newer recipe is available: choose Update…</strong>. Others say <strong>Not built by this app</strong>. One built from your own Dockerfile says so.</li>
+<li><strong>AWS base images</strong> are listed for reference: images are built on them, and they can't be run themselves.</li>
+</ul>
+<h2>New Image…</h2>
+<p><strong>New Image…</strong> opens a sheet with two views, <strong>Quick start</strong> and <strong>Advanced</strong>, the way the workspace editor does.</p>
+<h2>Quick start images</h2>
+<p>A name, a region and a size. Everything else takes the default: ARM64, git, GitHub CLI, tmux, Node.js 22, Python 3, the AWS CLI, Claude Code, Codex and the EFS tools, all OS capabilities, and the mount at launch. It keeps the EFS tools and the mount, so a quick start image still works if you turn on persistent storage later.</p>
+<ul>
+<li><strong>Name:</strong> letters, digits, hyphens and underscores, up to 64.</li>
+<li><strong>Region:</strong> one of the profile's listed regions. The first build in a region makes its S3 bucket.</li>
+<li><strong>Size:</strong> see below.</li>
+</ul>
+<h2>Advanced images</h2>
+<p>Every value, with everything it offers shown:</p>
+<ul>
+<li><strong>Base image version:</strong> the latest by default, or a version of AWS's base image in that region.</li>
+<li><strong>Architecture:</strong> ARM64, or x86-64 where the base image version supports it. One it doesn't is greyed, with why.</li>
+<li><strong>Size:</strong> all five, see below.</li>
+<li><strong>Packages:</strong> git, GitHub CLI, tmux, Node.js 22, Python 3, AWS CLI, Claude Code, Codex and EFS tools, each with what it adds. A package another one needs stays ticked while that one is: Codex needs Node.js.</li>
+<li><strong>Extra setup:</strong> shell lines, run as root while the image is built, after the packages are installed.</li>
+<li><strong>All OS capabilities</strong> and <strong>Mount /workspace at launch:</strong> see below.</li>
+<li><strong>Dockerfile:</strong> see below.</li>
+<li><strong>Use it as the default image for new workspaces.</strong></li>
+</ul>
+<p>Before <strong>Build</strong>, the sheet lists what it creates, with their tags: the S3 bucket and the recipe in it, the IAM role for the build and its policies, and the image. AWS writes the build's log to CloudWatch. Closing the sheet doesn't stop the build.</p>
+<h2>The Dockerfile</h2>
+<p>The last section of Advanced shows the Dockerfile the build uploads. While you only use the choices above it, the file is written from them and changes as they do. Type in it and it becomes yours: the build uploads exactly your text, and the choices that write it (packages, extra setup, mount at launch) lock. <strong>Reset to Generated</strong> goes back to the file the choices write.</p>
+<p>The file must not be empty, must start with <code>FROM</code> (comments and blank lines may come first), and must fit the size the build upload allows; the sheet says in plain words what's wrong. <strong>What you control and what the build call keeps</strong> lists the rules:</p>
+<ul>
+<li>The base image comes from the build settings, not your <code>FROM</code> line; your <code>FROM</code> line starts your file and has to be a public image with a build for the architecture you chose.</li>
+<li>Everything after <code>FROM</code> is yours: packages, users, tools, settings, <code>ENTRYPOINT</code> and <code>CMD</code>.</li>
+<li>The upload holds only the Dockerfile, so <code>COPY</code> and <code>ADD</code> have no files next to it. Use <code>RUN</code> to download or write files.</li>
+<li>Architecture, size and OS capabilities are build settings, not part of the file. Storage also needs amazon-efs-utils installed by your file.</li>
+<li>Mount at launch needs the app's listener in your file. The generated file downloads it while the image builds, from MicroVM Studio's site, and checks it against a sha256 the app pins, so a file that changed fails the build. MicroVM Studio never adds it to a file you wrote: keep the generated listener lines (the <code>RUN</code> that downloads it and the <code>CMD</code> that starts it), or turn Mount at launch off. A Dockerfile saved by an older version, with the listener written into it as one long base64 line, still works.</li>
+</ul>
+<h2>Sizes</h2>
+<p>An image's size sets the vCPUs and memory of every MicroVM made from it, and so what it costs: CPU follows memory. These are the five sizes, with their compute price an hour while running in us-east-1; the sheet shows the price in the image's own region.</p>
+<ul>
+<li>1 vCPU · 2 GB (≈ $0.13/h)</li>
+<li>2 vCPU · 4 GB (≈ $0.25/h)</li>
+<li>4 vCPU · 8 GB (≈ $0.50/h)</li>
+<li>8 vCPU · 16 GB (≈ $1.01/h)</li>
+<li>16 vCPU · 32 GB (≈ $2.02/h)</li>
+</ul>
+<p>The starter image is 1 vCPU · 2 GB unless you choose another. Your AWS account's memory quota counts each MicroVM's size, per architecture: see Memory quota reached in Troubleshooting.</p>
+<p>An image with Claude Code or Codex keeps them in its MicroVMs' memory, because a MicroVM reads its disk slowly the first time: they start in a second or two instead of 12 to 35. That takes about 330 MB of the MicroVM's memory for each, which nothing else can use. To give it back, add <code>: &gt; /etc/microvm-studio/keep-in-memory</code> to the image's extra setup.</p>
+<h2>Persistent /workspace in an image</h2>
+<ul>
+<li><strong>All OS capabilities:</strong> root in its MicroVMs gets every Linux capability, which mounting a persistent <code>/workspace</code> needs. With it on, EFS tools are always installed. A workspace set to <strong>Run as root</strong> then has full control of its MicroVM. Without it, workspaces using the image can't keep <code>/workspace</code> on a file system.</li>
+<li><strong>Mount /workspace at launch:</strong> a small listener in the image (its lifecycle hooks) mounts <code>/workspace</code> as each MicroVM starts, so it's ready when you connect. Without it, <code>/workspace</code> is mounted when the terminal connects.</li>
+</ul>
+<p>Both are on in the starter image and in Quick start images. The row of an image MicroVM Studio built says when one is missing.</p>
+<h2>Update…</h2>
+<p><strong>Update…</strong> opens the recipe of an image MicroVM Studio built. Change it, then <strong>Update</strong> builds a new version under the same name and region; a new name or region would make another image. If nothing changed, the image is already up to date. AWS keeps only a hash of the extra setup, so if this Mac doesn't have it, type it again, or leave it empty to build without it.</p>
+<h2>Delete…</h2>
+<p><strong>Delete…</strong> deletes the image and all its versions in its region. MicroVMs already running from it keep running, and it can't be undone. An image a saved workspace uses can't be deleted: choose another image for the workspace first. Deleting the default image for new workspaces leaves no default. AWS base images can't be deleted.</p>
+<div class="pager"><a href="workspaces.html">← Workspaces</a><a href="terminals.html">Terminals and Sessions →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

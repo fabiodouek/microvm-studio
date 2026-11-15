@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Costs and Guardrails · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html" aria-current="page">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Costs and Guardrails</h1>
+<h2>The menu bar</h2>
+<p>The menu bar icon shows how many MicroVMs are running and roughly what they cost an hour. Its menu lists each MicroVM with its state, time left and cost, and offers <strong>Connect</strong>, <strong>Save Work to a WIP Branch</strong> and <strong>Terminate…</strong>. It refreshes every minute.</p>
+<p>The estimate covers compute only, for running MicroVMs, from each image's size at Lambda MicroVM rates; see <a href="images.html">Images</a>. Suspended MicroVMs count as nothing. EFS, NAT gateways and data transfer aren't included.</p>
+<h2>Warnings</h2>
+<ul>
+<li><strong>Time left:</strong> a notification 30 minutes and 5 minutes before a MicroVM stops, with <strong>Save Work</strong> and <strong>Open</strong>.</li>
+<li><strong>Idle:</strong> a notification when a MicroVM has had no shell for a while, with <strong>Terminate</strong> and <strong>Open</strong>. Choose how long, or Never, in Settings → General → Notifications. MicroVMs launched with <strong>Suspend when idle</strong> off are left out: the menu lists them as <strong>Working unattended</strong>.</li>
+</ul>
+<p>Warnings are notifications, so allow MicroVM Studio's notifications in System Settings to see them.</p>
+<h2>Save Work</h2>
+<p>For MicroVMs MicroVM Studio launched from a workspace with repos. For each repo, it pushes your staged, unstaged and untracked changes, and any unpushed commits, to a new branch on <code>origin</code> named <code>wip/&lt;session&gt;-&lt;date&gt;-&lt;time&gt;</code> (UTC). Your working tree and branch don't change. A suspended MicroVM is resumed for the save, then suspended again.</p>
+<h2>Quitting</h2>
+<p>Quitting while MicroVMs that MicroVM Studio launched are running lists them: tick the ones to stop, then <strong>Terminate Selected and Quit</strong>, or <strong>Keep All and Quit</strong>. The ones you keep go on running, and billing.</p>
+<div class="pager"><a href="persistent-workspace-reference.html">← Persistent /workspace</a><a href="troubleshooting.html">Troubleshooting →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

@@ -6,6 +6,9 @@ every new MicroVM is ready to work in, Claude Code included.
 
 **[Download the latest version](https://github.com/fabiodouek/microvm-studio/releases/latest)**
 
+**[User guide](https://fabiodouek.github.io/microvm-studio/guide/)** with two narrated walkthroughs: a quick start, and a
+workspace that keeps its files on Amazon EFS. The website is https://fabiodouek.github.io/microvm-studio/.
+
 ## Requirements
 
 - macOS 15 or later, on Apple silicon or Intel.
@@ -43,3 +46,13 @@ Report problems or ask questions in [Issues](https://github.com/fabiodouek/micro
 
 MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web
 Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.
+
+## About
+
+Made by Fabio Douek. More from the author at [my2cents.ai](https://www.my2cents.ai/).
+
+## This repository
+
+It holds the app's releases, its update feeds and its website (GitHub Pages, from `main`). The user guide in
+`guide/` is generated: `python3 tools/build_guide.py` builds it from `tools/guide/<version>/`, where `help.json` is
+the app's own Help pages. The guide is versioned by the app's major version, starting at `v0`.

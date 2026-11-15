@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Troubleshooting · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html" aria-current="page">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Troubleshooting</h1>
+<h2>Sign-in expired</h2>
+<p>When an AWS sign-in has expired, the main window says <strong>Sign in to AWS</strong>. For an IAM Identity Center profile, choose <strong>Sign In…</strong> and finish in your browser, or run <code>aws sso login --profile &lt;name&gt;</code> in Terminal. For a profile with a credential helper, check the helper; for access keys, check <code>~/.aws</code>.</p>
+<h2>A region isn't listed</h2>
+<p>Settings → General → <strong>Regions to list</strong> holds the regions the main window and menu bar list for the profile Settings shows. Only its default region is listed until you add more, and the default region is always listed. If your organization blocks a region, the main window offers <strong>Stop Listing</strong> it.</p>
+<h2>A region won't add</h2>
+<p>Pressing <strong>Add</strong> on a region MicroVMs aren't known to run in checks it first. It says:</p>
+<ul>
+<li><strong>Lambda MicroVMs aren't available in</strong> the region: nothing was added. Choose another region.</li>
+<li><strong>Permission needed</strong>: your AWS identity isn't allowed to call <code>lambda:ListManagedMicrovmImages</code>, so the region couldn't be checked. Add that permission, or choose <strong>Add Anyway</strong>.</li>
+<li><strong>Sign in to AWS</strong>, or another message about the sign-in or the network: the region couldn't be checked. Sign in again and try once more, or choose <strong>Add Anyway</strong>.</li>
+</ul>
+<h2>A launch or connect takes a long time</h2>
+<p>A MicroVM that takes longer than 90 seconds to start isn't treated as failed. The sidebar says <strong>taking longer than usual</strong>, and the terminal's progress does too, and MicroVM Studio keeps checking every 5 seconds until the MicroVM runs or stops. Mounting storage and a large image are the usual reasons. Nothing needs doing; if it ends up stopped, the message says why.</p>
+<h2>Memory quota reached</h2>
+<p>Your AWS account can't run more MicroVM memory at once: each MicroVM counts its image's size against a quota for its architecture. Terminate a MicroVM, use an image with a smaller size (see <a href="images.html">Images</a>), or ask AWS for a higher quota. When a launch or a resume hits it, the main window's message has <strong>Open Service Quotas</strong>, which opens the page where you can ask for more. In a terminal pane, the message gives that page's address instead.</p>
+<h2>"This MicroVM is suspended"</h2>
+<p>A pane says this when it reconnected by itself, such as after your Mac woke, and found the MicroVM suspended while its workspace's <strong>Resume on connect</strong> is off. Choose <strong>Resume and Reconnect</strong> to resume it, or turn Resume on connect back on in the workspace's Time limits section.</p>
+<h2>A setup step failed</h2>
+<p>The terminal shows which step failed and its output, with secrets hidden. <strong>Try Again</strong> runs setup again. <strong>Open Shell Anyway</strong> connects once without any setup: no credentials, repos or start command, just the MicroVM's own shell, to look around. It never mounts <code>/workspace</code>, but with persistent storage it opens there when <code>/workspace</code> is mounted already, as an image with lifecycle hooks does at launch; otherwise it opens in your home folder. A missing secret goes in Settings → Secrets. Setup gives up after 15 minutes.</p>
+<h2>"This MicroVM can't reach github.com"</h2>
+<p>Setup stops at Cloning repos when the MicroVM has no internet. That happens on a VPC network connector whose subnets don't route out through a NAT gateway, as with a persistent <code>/workspace</code>: add the route in your VPC (see <a href="networks.html">Network Connectors</a>), then launch a new MicroVM. A workspace that doesn't need your VPC can use <strong>Internet (default)</strong> as its network connector. Before it clones, setup gives github.com 10 seconds to answer, and a clone that stalls for 30 seconds fails instead of hanging.</p>
+<h2>The start command exits</h2>
+<p>If the shell closes within 10 seconds of connecting, the pane says <strong>The shell closed right after it started</strong> and doesn't retry. Edit the workspace's start command, or clear it and run the command by hand to see what it prints.</p>
+<h2>"Mounting /workspace" failed</h2>
+<ul>
+<li><strong>This image can't mount EFS:</strong> update the starter image in Settings → Images, or choose an image built with <strong>All OS capabilities</strong>.</li>
+<li><strong>It took over a minute:</strong> check that the file system's subnets and security groups still exist, and look at its health and mount targets: <strong>View…</strong> in Settings → Storage.</li>
+<li><strong>The file system isn't on this Mac any more:</strong> edit the workspace and choose another, or None.</li>
+</ul>
+<p>With lifecycle hooks, a mount that failed at launch is tried again when the terminal connects; if that fails too, the output says why the first one failed.</p>
+<h2>Permissions</h2>
+<p>The permission check is in Settings → General → <strong>Permissions</strong>: choose <strong>Check Permissions</strong>. It checks the profile Settings shows, in its default region, and shows what your AWS identity can do, in six groups: <strong>Run MicroVMs</strong>, <strong>Open shells</strong>, <strong>Build images</strong>, <strong>Use and create IAM roles</strong> (optional), <strong>Use VPC network connectors</strong> (optional) and <strong>Keep /workspace on EFS</strong> (optional). <strong>Copy Policy</strong> copies a minimal IAM policy to add to your user or role. It includes the roles your saved workspaces and connectors use.</p>
+<h2>No warnings appear</h2>
+<p>Time-left and idle warnings are notifications: allow them for MicroVM Studio in System Settings → Notifications.</p>
+<div class="pager"><a href="costs.html">← Costs and Guardrails</a><a href="shortcuts.html">Keyboard Shortcuts →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

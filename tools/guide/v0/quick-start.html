@@ -1,0 +1,27 @@
+<h1>Quick start</h1>
+<p class="lead muted">From a new install to a running MicroVM with your repo cloned and Claude Code signed in. About ten minutes, five of them waiting for the starter image to build.</p>
+<figure><video class="shot" controls preload="metadata" poster="../../assets/videos/quick-start.jpg"><source src="../../assets/videos/quick-start.mp4" type="video/mp4"><track kind="subtitles" srclang="en" label="English" src="../../assets/videos/quick-start.vtt"></video>
+<figcaption>The whole walkthrough, narrated (5 minutes).</figcaption></figure>
+<div class="note cost"><strong>What this costs.</strong> A MicroVM bills while it runs: about $0.13 an hour at the smallest size. Nothing here needs a VPC or a NAT gateway.</div>
+<h2>Before you start</h2>
+<ul><li>An AWS profile in <code>~/.aws/config</code> or <code>~/.aws/credentials</code>, in a region with Lambda MicroVMs.</li>
+<li>A GitHub account, and a Claude subscription or an Anthropic API key, if you want those in the MicroVM.</li></ul>
+<h2>Steps</h2>
+<ol class="steps">
+<li><h3>Open the app</h3><p>The main window shows <strong>Get started</strong>: a short checklist. Your profile and its region are ticked already. Each line's button opens the place that does it.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-get-started.jpg" width="1440" height="900" loading="lazy" alt="The Get started checklist: Add an AWS profile and Choose regions are ticked; Choose a default image and New workspace are still to do."></figure></li>
+<li><h3>Build the starter image</h3><p>Press <strong>Choose an Image…</strong>, then <strong>Build Starter Image…</strong> and <strong>Build</strong>. MicroVMs run from an image built in your own account; the starter has git, the GitHub CLI, tmux, Node.js, Python, the AWS CLI, Claude Code and Codex. The build takes about five minutes and you can close the sheet meanwhile. When it finishes it becomes the default image for new workspaces.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-starter.jpg" width="1440" height="900" loading="lazy" alt="The Build the Starter Image sheet, with the size choices and what the image includes."></figure></li>
+<li><h3>Sign in to GitHub</h3><p>In <strong>Settings → GitHub</strong>, press <strong>Sign In to GitHub…</strong>. The app shows a one-time code; <strong>Copy Code and Open GitHub</strong> takes you to GitHub, where you paste it and choose which repos the app may reach. MicroVMs get a token that lasts 8 hours and reaches only those repos.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-github.jpg" width="1440" height="900" loading="lazy" alt="Settings, GitHub tab, listing the signed-in account and how many repos it reaches."></figure></li>
+<li><h3>Make a workspace</h3><p>Back in the main window, press <strong>New Workspace…</strong> and give it a name. A workspace is what every MicroVM you launch from it starts with. Quick start keeps it to a few fields: the image, the repos and the sign-ins. Press <strong>Add Repo</strong>, type <code>owner/repo</code>, and <strong>Check Connection</strong> to confirm the access.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-workspace.jpg" width="1440" height="900" loading="lazy" alt="The New Workspace sheet with a repo added; under it, Can push and Connected as the account."></figure></li>
+<li><h3>Sign Claude Code in</h3><p>Under <strong>Claude Code</strong>, choose <strong>Token from claude setup-token</strong> and press <strong>Sign In with Claude…</strong>. Approve in the browser; the token is saved in your Mac's Keychain and sent only to MicroVMs of workspaces that use it. An Anthropic API key and Amazon Bedrock are the other choices.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-claude.jpg" width="1440" height="900" loading="lazy" alt="The workspace's Claude Code section with a saved token selected."></figure></li>
+<li><h3>Save and launch</h3><p>Press <strong>Save</strong>, then <strong>Launch</strong>. The MicroVM starts in a few seconds; the app then copies credentials and clones the repo, and the terminal opens. Run <code>claude</code> to start working.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-terminal.jpg" width="1440" height="900" loading="lazy" alt="A terminal in the running MicroVM: the repo is cloned and Claude Code answers a prompt."></figure></li>
+<li><h3>Suspend, resume, terminate</h3><p><strong>Suspend</strong> pauses the MicroVM and its billing; it also suspends by itself after 5 minutes with no terminal connected. <strong>Resume and Reconnect</strong> brings it back with the session as you left it. <strong>Terminate…</strong> stops it for good: anything you didn't push is lost, so the app asks first. The workspace stays for the next launch.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-suspended.jpg" width="1440" height="900" loading="lazy" alt="A suspended MicroVM with the Resume and Reconnect button over its terminal."></figure></li>
+</ol>
+<h2>Next</h2>
+<p>To keep files between MicroVMs, see <a href="persistent-workspace.html">A workspace that keeps its files</a>. For everything a workspace can hold, see <a href="workspaces.html">Workspaces</a>.</p>

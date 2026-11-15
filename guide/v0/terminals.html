@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Terminals and Sessions · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html" aria-current="page">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Terminals and Sessions</h1>
+<h2>One window</h2>
+<p>MicroVMs open in the main window, never in windows of their own. Select a MicroVM in the sidebar to see its terminal. The others keep their sessions out of sight, screen and scrollback included. The header shows the MicroVM's state and time left, and its buttons: <strong>Suspend</strong> or <strong>Resume</strong>, <strong>Terminate…</strong>, <strong>Disconnect</strong>, <strong>History</strong>, <strong>Upload…</strong> and <strong>Download…</strong>. In a narrow window the last three are in a <strong>More</strong> menu. The <strong>MicroVM</strong> menu has them all.</p>
+<h2>Setup</h2>
+<p>Each time a workspace's MicroVM connects, the pane ticks off its setup: mounting <code>/workspace</code> with persistent storage, copying files, adding credentials, cloning repos and running setup commands. <strong>Cancel</strong> stops setup at any step and closes the connection. The pane then offers <strong>Close</strong>, <strong>Open Shell Anyway</strong> and <strong>Try Again</strong>. Escape doesn't cancel, so a key meant for the terminal can't stop setup. When a step fails, see <a href="troubleshooting.html">Troubleshooting</a>.</p>
+<h2>Keep session (tmux)</h2>
+<p><strong>Keep the session when you disconnect (tmux)</strong>, in the workspace's Behaviour section, is on for new workspaces. Reconnecting returns to the same tmux session, with everything still running in it, and a dropped connection reconnects by itself: it tries 8 times over about two minutes, and <strong>Reconnect Now</strong> skips the wait. The image needs tmux; the starter image has it. Plain shells in Other MicroVMs, and <strong>Open Shell Anyway</strong>, don't keep their shell.</p>
+<h2>Splits</h2>
+<ul>
+<li><strong>Split Right</strong> (⌘D) and <strong>Split Down</strong> (⇧⌘D), in the File menu, open another shell beside or below the one you're in. With Keep session, it joins the same tmux session in a tmux window of its own.</li>
+<li><strong>Close Pane</strong> (⇧⌘W) closes the pane you're in. It asks first when the pane's shell isn't kept in tmux, because the shell ends with it.</li>
+<li><strong>Next Pane</strong> (⌘]) and <strong>Previous Pane</strong> (⌘[) move between panes.</li>
+</ul>
+<h2>⌘W</h2>
+<p>While a terminal is shown, ⌘W is <strong>Disconnect</strong>. When every pane keeps its shell in tmux, it disconnects without asking; otherwise it asks first, because the shells end and anything running in them stops. With no terminal shown, ⌘W closes the window. Neither terminates the MicroVM: it keeps running, and billing. Closing the window and quitting ask in the same way. In these questions Return and Escape both cancel.</p>
+<h2>Disconnect and reconnect</h2>
+<p><strong>Disconnect</strong>, in the header or the MicroVM menu, does what ⌘W does: it closes the terminal and leaves the MicroVM running. It doesn't reconnect by itself: press <strong>Connect</strong>. When a shell exits or the connection drops, the pane says so, and <strong>Reconnect</strong> connects again: with Keep session you're back in the same tmux session, and without it you get a new shell.</p>
+<p>After the Mac wakes, MicroVM Studio checks each connection straight away, so a dead one shows up quickly. With Keep session, a dropped connection also reconnects as soon as the network comes back.</p>
+<h2>Idle and suspend</h2>
+<p>Three settings in the workspace's Time limits section decide what happens while no terminal is connected. Idle means just that: work running inside the MicroVM doesn't count.</p>
+<ul>
+<li><strong>Suspend when idle:</strong> Off, or any time from 1 minute up to the max duration, typed in minutes or hours; the pop-up has shortcuts of 5, 15, 30 or 60 minutes. New workspaces suspend after 5 minutes. Off keeps the MicroVM running, and billing, while no terminal is connected, until its max duration. Otherwise AWS suspends it after that long with no terminal connected, even while something runs in it: everything in it pauses until it resumes.</li>
+<li><strong>Terminate after suspended for:</strong> any time from 1 minute up to the max duration; the shortcuts are 1, 4 or 8 hours. A suspended MicroVM that isn't resumed in that time is terminated. New workspaces use 8 hours.</li>
+<li><strong>Resume on connect:</strong> on for new workspaces. Connecting resumes a suspended MicroVM. When it's off, a reconnect that happens by itself, such as when a dropped connection comes back after your Mac wakes, leaves the MicroVM suspended: the pane says <strong>This MicroVM is suspended</strong>, and <strong>Resume and Reconnect</strong> resumes it. Connecting yourself, or choosing <strong>Resume</strong>, always resumes it.</li>
+</ul>
+<p>The last two apply only while Suspend when idle is on. Workspaces saved before these settings keep what they did: <strong>Keep working when detached</strong> on became Suspend when idle Off, and off became 5 minutes.</p>
+<ul>
+<li><strong>Suspend</strong> and <strong>Resume</strong> in the header act straight away. Resuming starts billing again.</li>
+<li>Every MicroVM stops for good after its max duration, 8 hours at most, and time suspended counts, so it can end a suspended MicroVM sooner. The header counts down, orange under 30 minutes and red under 5. <strong>Terminate…</strong> stops it for good now. Anything not pushed is lost when it stops.</li>
+</ul>
+<h2>History</h2>
+<p><strong>History</strong> in the header shows what happened to the MicroVM, newest first, each with its time: its launch by MicroVM Studio, running, suspended, resumed and terminated, and terminals connecting and disconnecting. MicroVM Studio records it while it's open, and sees state changes within about a minute. A MicroVM's history is kept for 7 days after it stops.</p>
+<div class="pager"><a href="images.html">← Images</a><a href="copying-files.html">Copying Files →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

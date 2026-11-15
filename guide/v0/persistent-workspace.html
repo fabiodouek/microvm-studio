@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A workspace that keeps its files · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html" aria-current="page">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>A workspace that keeps its files</h1>
+<p class="lead muted">By default a MicroVM's files are gone when it stops. This walkthrough puts <code>/workspace</code> on Amazon EFS, so a new MicroVM picks up where the last one left off.</p>
+<figure><video class="shot" controls preload="metadata" poster="../../assets/videos/persistent-workspace.jpg"><source src="../../assets/videos/persistent-workspace.mp4" type="video/mp4"><track kind="subtitles" srclang="en" label="English" src="../../assets/videos/persistent-workspace.vtt"></video>
+<figcaption>The whole walkthrough, narrated (5 and a half minutes).</figcaption></figure>
+<div class="note cost"><strong>What this costs.</strong> EFS bills for what it stores (about $0.30 per GB-month in us-east-1). The VPC's NAT gateway bills by the hour whether or not a MicroVM is running, so delete what you no longer need.</div>
+<h2>Before you start</h2>
+<ul><li>The starter image, or another image with the EFS tools: see <a href="quick-start.html">Quick start</a>.</li>
+<li>A VPC with private subnets that route to a NAT gateway. The app doesn't create VPCs or NAT gateways; it uses one you choose.</li></ul>
+<h2>Steps</h2>
+<ol class="steps">
+<li><h3>Make a network connector</h3><p>In <strong>Settings → Network</strong>, press <strong>New Connector…</strong>, name it and choose your VPC. Each subnet says whether MicroVMs there reach the internet. Tick the private ones that say <strong>Internet: yes</strong>: a subnet with only an internet gateway doesn't work, because MicroVMs get no public address. <strong>Create</strong> takes about four minutes.</p>
+<figure class="shot"><img src="../../assets/guide/v0/pw-connector.jpg" width="1440" height="900" loading="lazy" alt="The New Connector sheet: a VPC chosen, and three subnets each marked Internet yes or no, with the two private ones ticked."></figure></li>
+<li><h3>Make a file system</h3><p>In <strong>Settings → Storage</strong>, press <strong>New File System…</strong> and name it. The connector you just made is selected. <strong>Create</strong> makes an encrypted EFS file system with a mount target in each zone, in about a minute and a half.</p>
+<figure class="shot"><img src="../../assets/guide/v0/pw-storage.jpg" width="1440" height="900" loading="lazy" alt="The New File System sheet with a name and the network connector selected."></figure></li>
+<li><h3>Give a workspace the file system</h3><p>In a new or existing workspace, switch to <strong>Advanced</strong>, use <strong>Jump to → Storage</strong> and choose the file system under <strong>Persistent /workspace</strong>. The network connector locks to the file system's own. Storage needs a role of the workspace's own: <strong>New Role…</strong> makes one. Then <strong>Save</strong>.</p>
+<figure class="shot"><img src="../../assets/guide/v0/pw-workspace.jpg" width="1440" height="900" loading="lazy" alt="The workspace editor's Storage section with the file system chosen."></figure></li>
+<li><h3>Launch and write something</h3><p>Launch the workspace. In the shell, <code>/workspace</code> is the EFS mount, in a folder that only this workspace can reach.</p>
+<figure class="shot"><img src="../../assets/guide/v0/pw-note.jpg" width="1440" height="900" loading="lazy" alt="A terminal showing /workspace mounted and a note written into it."></figure></li>
+<li><h3>Terminate, then launch another</h3><p><strong>Terminate…</strong> stops the MicroVM for good. Its page then offers <strong>Launch Another</strong>, which starts a new MicroVM from the same workspace.</p>
+<figure class="shot"><img src="../../assets/guide/v0/pw-terminated.jpg" width="1440" height="900" loading="lazy" alt="A terminated MicroVM's page with a Launch Another button."></figure></li>
+<li><h3>The files are still there</h3><p>The new MicroVM mounts the same folder. Repos, with their uncommitted work, are cloned into <code>/workspace</code> too, so they carry over.</p>
+<figure class="shot"><img src="../../assets/guide/v0/pw-read.jpg" width="1440" height="900" loading="lazy" alt="A terminal in the new MicroVM reading the note the first one wrote."></figure></li>
+</ol>
+<h2>Cleaning up</h2>
+<p>Delete in this order, each in Settings: the workspace's storage choice (or the workspace), then the file system in <strong>Storage</strong>, then the connector in <strong>Network</strong>. The app says why when something can't be deleted yet. Deleting a file system deletes every workspace's files on it.</p>
+<p>More detail: <a href="persistent-workspace-reference.html">Persistent /workspace</a> and <a href="networks.html">Network Connectors</a> in the reference.</p>
+
+<div class="pager"><a href="quick-start.html">← Quick start</a><a href="getting-started.html">Getting Started →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>

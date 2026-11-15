@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Copying Files · MicroVM Studio user guide</title>
+<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MicroVM Studio</a>
+<nav class="site-nav" aria-label="Site">
+<a href="../" aria-current="page">User guide</a>
+<a href="../../#videos">Walkthroughs</a>
+<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="https://github.com/fabiodouek/microvm-studio">GitHub</a>
+</nav></div></header>
+<div class="wrap guide">
+<nav class="guide-nav" aria-label="User guide">
+<span class="version">Guide v0 · MicroVM Studio 0.x</span>
+<h2>Start here</h2><ul><li><a href="index.html">Overview</a></li><li><a href="quick-start.html">Quick start</a></li><li><a href="persistent-workspace.html">A workspace that keeps its files</a></li></ul><h2>Reference</h2><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="profiles.html">Profiles and Regions</a></li><li><a href="workspaces.html">Workspaces</a></li><li><a href="images.html">Images</a></li><li><a href="terminals.html">Terminals and Sessions</a></li><li><a href="copying-files.html" aria-current="page">Copying Files</a></li><li><a href="github.html">GitHub</a></li><li><a href="claude-code.html">Claude Code</a></li><li><a href="codex.html">Codex</a></li><li><a href="aws-roles.html">AWS Roles and Bedrock</a></li><li><a href="networks.html">Network Connectors</a></li><li><a href="persistent-workspace-reference.html">Persistent /workspace</a></li><li><a href="costs.html">Costs and Guardrails</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li><li><a href="shortcuts.html">Keyboard Shortcuts</a></li></ul>
+</nav>
+<main class="guide-body">
+<h1>Copying Files</h1>
+<h2>Upload and download</h2>
+<ul>
+<li><strong>Upload…</strong> in the MicroVM's header copies files from this Mac into the MicroVM's home folder: <code>dev</code>'s in the starter image, or root's with <strong>Run as root</strong>. A file already there is never overwritten: the copy is numbered, such as <code>report (1).pdf</code>.</li>
+<li><strong>Drag and drop</strong> files onto the terminal to upload them the same way.</li>
+<li><strong>Download…</strong> shows the MicroVM's files, starting in the home folder. Double-click a folder to open it, or use <strong>Home</strong>, <strong>/workspace</strong> and the up arrow; choose a file and press <strong>Download…</strong>, then say where to save it on this Mac. A path you already know, such as <code>~/out.txt</code>, can be typed instead. A folder with more than 2,000 items shows the first 2,000.</li>
+</ul>
+<p>Files always go to the home folder, even with a persistent <code>/workspace</code>; move them there with <code>mv</code>. The terminal doesn't need to be connected, and it stays usable while a file copies.</p>
+<h2>Limits</h2>
+<ul>
+<li>At most <strong>100 MB</strong> per file, either way.</li>
+<li><strong>Folders can't be copied.</strong> Zip them first: <code>zip -r project.zip project</code> in the MicroVM, or Compress in the Finder.</li>
+<li>One transfer at a time per MicroVM, while it's running. Resume a suspended one first.</li>
+<li>A transfer stops if the MicroVM doesn't answer for 60 seconds.</li>
+</ul>
+<p><strong>Cancel</strong> stops a transfer. A file part-way through an upload isn't kept, and a cancelled download saves nothing. In a batch, the files already copied stay, and the result lists them.</p>
+<h2>Files to copy at launch</h2>
+<p>A workspace's <strong>Files to copy</strong> go from this Mac into each new MicroVM the first time it connects. They go to the home folder there, except config files such as <code>~/.gitconfig</code> and <code>~/.ssh/config</code>, which keep their place. They're limited to 1 MB in total, and copied once per MicroVM: later edits on this Mac don't reach a MicroVM that already has them.</p>
+<div class="pager"><a href="terminals.html">← Terminals and Sessions</a><a href="github.html">GitHub →</a></div>
+</main>
+</div>
+<footer class="site-footer"><div class="wrap">
+<nav aria-label="Footer"><a href="../">User guide</a><a href="../../privacy.html">Privacy</a><a href="../../eula.html">Licence</a><a href="https://github.com/fabiodouek/microvm-studio/issues">Support</a><a href="https://www.my2cents.ai/">my2cents.ai</a></nav>
+<p>Made by Fabio Douek. More from the author at <a href="https://www.my2cents.ai/">my2cents.ai</a>.</p>
+<p>MicroVM Studio is an independent project. It isn't affiliated with, endorsed by or sponsored by Amazon Web Services or Anthropic. AWS, AWS Lambda and Amazon EFS are trademarks of Amazon.com, Inc. or its affiliates.</p>
+</div></footer>
+</body></html>
