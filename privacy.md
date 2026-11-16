@@ -1,6 +1,6 @@
 # MicroVM Studio privacy policy
 
-*Last updated: 8 November 2026*
+*Last updated: 16 November 2026*
 
 MicroVM Studio is a Mac app for working in AWS Lambda MicroVMs. This policy covers the app in both its editions:
 the direct download and the Mac App Store edition.
@@ -35,6 +35,20 @@ What these services do with your data is covered by their own privacy policies.
 
 Everything inside a MicroVM runs in your AWS account, under your control. That includes files, repos, credentials
 copied in, and anything Claude Code does.
+
+## This website
+
+This website, `fabiodouek.github.io/microvm-studio`, uses Google Analytics to count visits: which pages are read,
+where visitors come from, and clicks on the download. That's the website only; the app sends nothing.
+
+- **Your choice:** the site asks before it sets analytics cookies. If you decline, none are set, and Google
+  receives only anonymous signals without cookies, which it uses for totals. **Cookie choices** at the foot of
+  every page asks again.
+- **What Google receives:** the page address, the referring page, your browser and device type, and an
+  approximate location from your IP address, which Google Analytics doesn't store. With your consent, a cookie
+  tells visits from the same browser apart.
+- **Hosting:** the site is served by GitHub Pages and embeds videos from YouTube in its privacy-enhanced mode.
+  GitHub and Google handle those requests under their own privacy policies.
 
 ## Children
 

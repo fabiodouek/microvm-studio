@@ -103,3 +103,9 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5em 0; }
   .guide-nav { position: static; max-height: none; order: 2; border-top: 1px solid var(--line); margin-top: 24px; }
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* The analytics consent bar (assets/analytics.js). */
+#consent { position: fixed; z-index: 20; left: 16px; right: 16px; bottom: 16px; max-width: 720px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 18px; background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); font-size: .92rem; }
+#consent p { margin: 0; flex: 1 1 320px; }
+#consent div { display: flex; gap: 8px; margin-left: auto; }
+#consent button { font: inherit; font-weight: 600; cursor: pointer; padding: 8px 16px; }

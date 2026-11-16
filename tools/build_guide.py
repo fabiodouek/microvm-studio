@@ -91,7 +91,8 @@ def page(version, title, body, nav, current, pager):
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{html.escape(title)} · MicroVM Studio user guide</title>
 <link rel="icon" type="image/png" href="../../assets/favicon.png"><link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<link rel="stylesheet" href="../../assets/site.css"></head><body>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/analytics.js" defer></script></head><body>
 {HEADER}
 <div class="wrap guide">
 <nav class="guide-nav" aria-label="User guide">
