@@ -1,6 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+--><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
         <title>MicroVM Studio</title>
+        <item>
+            <title>0.4.0</title>
+            <pubDate>Mon, 16 Nov 2026 03:07:30 +0000</pubDate>
+            <link>https://github.com/fabiodouek/microvm-studio</link>
+            <sparkle:version>9</sparkle:version>
+            <sparkle:shortVersionString>0.4.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <description sparkle:format="markdown"><![CDATA[# 0.4.0
+
+**Main window**
+- **Get started** no longer opens with an empty sidebar: the list and the notices were laid out off screen until a MicroVM was selected.
+- **Notices** are behind a bell in the toolbar, with a count. They used to float over the top of the shell. A new error opens the list by itself.
+- **Launch** with nothing selected shows the workspace's page, which says it's starting. A new workspace is selected when it's saved.
+- **Terminate…** names the MicroVM ("my-project · microvm-1a2b"), not only its workspace. A terminated MicroVM offers Launch Another, and stays under its workspace after the app restarts.
+- **Sidebar:** a click under the last row, or Escape, selects nothing. A selected MicroVM that leaves the list is deselected.
+- **View menu:** Refresh, Focus Sidebar and Show/Hide Sidebar. **Help menu:** User Guide (⌘?) and Website open the guide and the site in your browser. They replace the Help window: the guide on the website has the same pages, with pictures and two narrated walkthroughs. **Check for Updates…** is in the app menu: it was missing.
+
+**Settings**
+- **The open tab** has its tile in colour; the others are grey.
+- **Check Permissions** no longer reports permissions as missing that the identity has: an administrator was told VPC connectors and EFS were missing. Its outcome shows beside the button and the results scroll into view. A "Permission needed" notice has Check Permissions….
+- **Images:** a failed build shows the end of its build log, with the log in CloudWatch one click away. A build has a row from the moment it starts, with Show Progress…, and a notice when it ends. Python 3 shows as included while Mount /workspace at launch needs it. A name that is too long says by how much.
+- **Network:** New Connector says whether each subnet reaches the internet, and warns under one that doesn't. A connector being created no longer says "Internet: no". A connector a workspace can't use says why.
+- **The Settings window** stays on screen when you switch to another app, so a GitHub or Claude sign-in sheet is still there when you come back from the browser.
+- **Forms:** New Image, New Connector and New File System open without warnings, and their Name fields are named for VoiceOver. The starter image's time reads "about 5 minutes" everywhere.
+
+**Workspaces**
+- **The first-run checklist's** third step is "Choose a default image", which is what ticks it.
+- **Editor:** a new workspace opens without warnings; Advanced has a Jump to menu for its 13 sections.
+- **New Role:** when the name is taken by a role tied to a deleted workspace, the sheet says why and offers the next name.
+
+**Help**
+- Search marks the words it found in a topic and scrolls to the first.
+]]></description>
+            <enclosure url="https://github.com/fabiodouek/microvm-studio/releases/download/v0.4.0/MicroVMStudio-0.4.0.dmg" length="39964699" type="application/octet-stream" sparkle:edSignature="thBLlKIxeaVpdpLuhYdNfQ34bnxsMhiQFW+VD6uO6Itoaq0O46XCk3Ws0pGrypAybj1QvukQrBF1Wpv8U4+SAg=="></enclosure>
+        </item>
     </channel>
-</rss>
+</rss><!-- sparkle-signatures:
+edSignature: 8hxp10hTtdmFK37JmJRo4C7pl7C7dS1Or0AnKSvp0K4vEppv3/xpyNsGrD5hY1P05wCM6RHQ9A7AnDxj6M/JAA==
+length: 3965
+-->
