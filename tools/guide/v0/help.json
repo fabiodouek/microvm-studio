@@ -11,7 +11,7 @@
       },
       {
         "kind" : "bullet",
-        "text" : "An AWS account in a region with Lambda MicroVMs: us-east-1, us-east-2, us-west-2, eu-west-1 or ap-northeast-1."
+        "text" : "An AWS account in a region with Lambda MicroVMs. AWS lists them under [AWS Capabilities by Region](https:\/\/builder.aws.com\/build\/capabilities)."
       },
       {
         "kind" : "bullet",

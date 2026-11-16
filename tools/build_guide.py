@@ -44,10 +44,11 @@ FOOTER = """<footer class="site-footer"><div class="wrap">
 
 
 def inline(text, links):
-    """The Help pages' inline Markdown (**bold** and `code`), and "See <Page>" as a link."""
+    """The Help pages' inline Markdown (**bold**, `code` and [text](url)), and "See <Page>" as a link."""
     out = html.escape(text, quote=False)
     out = re.sub(r"`([^`]+)`", r"<code>\1</code>", out)
     out = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
+    out = re.sub(r"\[([^\]]+)\]\((https://[^)\s]+)\)", r'<a href="\2">\1</a>', out)
     for title, href in links.items():
         out = re.sub(r"\b[Ss]ee " + re.escape(html.escape(title, quote=False)) + r"\b",
                      lambda m: m.group(0)[:4] + f'<a href="{href}">{html.escape(title, quote=False)}</a>', out)
@@ -89,6 +90,7 @@ def page(version, title, body, nav, current, pager):
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{html.escape(title)} · MicroVM Studio user guide</title>
+<link rel="icon" type="image/png" href="../../assets/favicon.png"><link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../../assets/site.css"></head><body>
 {HEADER}
 <div class="wrap guide">
@@ -154,7 +156,7 @@ def main():
     # guide/ sends readers to the current version; the app's Help → User Guide opens this address.
     (ROOT / "guide" / "index.html").write_text(f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={CURRENT}/">
-<link rel="canonical" href="{CURRENT}/"><title>MicroVM Studio user guide</title></head>
+<link rel="canonical" href="{CURRENT}/"><link rel="icon" type="image/png" href="../assets/favicon.png"><title>MicroVM Studio user guide</title></head>
 <body><p>The user guide is at <a href="{CURRENT}/">{CURRENT}/</a>.</p></body></html>
 """)
 
