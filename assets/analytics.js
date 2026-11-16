@@ -2,7 +2,9 @@
 // Until a visitor accepts, analytics storage is denied: no analytics cookies are set and Google receives only
 // cookieless pings. The choice is kept in this browser; "Cookie choices" in the footer asks again.
 (function () {
-  var ID = 'G-08P9R1QZJR';
+  // The Google tag for this site. Its destinations, the Analytics property G-08P9R1QZJR among them, are set in
+  // Google's tag settings, so there is no gtag('config') here.
+  var ID = 'GTM-MFHMMZB2';
   var KEY = 'analytics-consent';
   var choice = null;
   try { choice = localStorage.getItem(KEY); } catch (e) {}
@@ -15,10 +17,9 @@
     ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'
   });
   gtag('js', new Date());
-  gtag('config', ID);
   var tag = document.createElement('script');
   tag.async = true;
-  tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+  tag.src = 'https://www.googletagmanager.com/gtm.js?id=' + ID;
   document.head.appendChild(tag);
 
   function decide(value) {
