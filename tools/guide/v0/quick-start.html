@@ -4,7 +4,8 @@
 <figcaption>The whole walkthrough, narrated (3 and a half minutes). <a href="https://youtu.be/AoHF9tSWMzA">Watch on YouTube</a>.</figcaption></figure>
 <div class="note cost"><strong>What this costs.</strong> A MicroVM bills while it runs: about $0.13 an hour at the smallest size. Nothing here needs a VPC or a NAT gateway.</div>
 <h2>Before you start</h2>
-<ul><li>An AWS profile in <code>~/.aws/config</code> or <code>~/.aws/credentials</code>, in a region with Lambda MicroVMs.</li>
+<ul><li>The app, installed: see <a href="install.html">Install</a>.</li>
+<li>An AWS profile in <code>~/.aws/config</code> or <code>~/.aws/credentials</code>, in a region with Lambda MicroVMs.</li>
 <li>A GitHub account, and a Claude subscription or an Anthropic API key, if you want those in the MicroVM.</li></ul>
 <h2>Steps</h2>
 <ol class="steps">
@@ -14,14 +15,20 @@
 <figure class="shot"><img src="../../assets/guide/v0/qs-starter.jpg" width="1440" height="900" loading="lazy" alt="The Build the Starter Image sheet, with the size choices and what the image includes."></figure></li>
 <li><h3>Sign in to GitHub</h3><p>In <strong>Settings → GitHub</strong>, press <strong>Sign In to GitHub…</strong>. The app shows a one-time code; <strong>Copy Code and Open GitHub</strong> takes you to GitHub, where you paste it and choose which repos the app may reach. MicroVMs get a token that lasts 8 hours and reaches only those repos.</p>
 <figure class="shot"><img src="../../assets/guide/v0/qs-github.jpg" width="1440" height="900" loading="lazy" alt="Settings, GitHub tab, listing the signed-in account and how many repos it reaches."></figure></li>
-<li><h3>Make a workspace</h3><p>Back in the main window, press <strong>New Workspace…</strong> and give it a name. A workspace is what every MicroVM you launch from it starts with. Quick start keeps it to a few fields: the image, the repos and the sign-ins. Press <strong>Add Repo</strong>, type <code>owner/repo</code>, and <strong>Check Connection</strong> to confirm the access.</p>
-<figure class="shot"><img src="../../assets/guide/v0/qs-workspace.jpg" width="1440" height="900" loading="lazy" alt="The New Workspace sheet with a repo added; under it, Can push and Connected as the account."></figure></li>
+<li><h3>Make a workspace</h3><p>Back in the main window, press <strong>New Workspace…</strong> and give it a name. A workspace is what every MicroVM you launch from it starts with. Quick start keeps it to a few fields: the image, the repos and the sign-ins.</p></li>
+<li><h3>Choose a repo</h3><p>Press <strong>Browse Repos…</strong>. It lists the repos your GitHub sign-in reaches; search for the one to clone, tick it and press <strong>Add</strong>. (<strong>Add Repo</strong> takes a typed <code>owner/repo</code> instead.) <strong>Check Connection</strong> confirms the access, and says whether you can push.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-browse.jpg" width="1440" height="830" loading="lazy" alt="The Browse Repos sheet: a search for the repo, and the one match ticked."></figure>
+<figure class="shot"><img src="../../assets/guide/v0/qs-workspace.jpg" width="1440" height="830" loading="lazy" alt="The New Workspace sheet with the repo added; under it, Can push and Connected as the account."></figure></li>
 <li><h3>Sign Claude Code in</h3><p>Under <strong>Claude Code</strong>, choose <strong>Token from claude setup-token</strong> and press <strong>Sign In with Claude…</strong>. Approve in the browser; the token is saved in your Mac's Keychain and sent only to MicroVMs of workspaces that use it. An Anthropic API key and Amazon Bedrock are the other choices.</p>
-<figure class="shot"><img src="../../assets/guide/v0/qs-claude.jpg" width="1440" height="900" loading="lazy" alt="The workspace's Claude Code section with a saved token selected."></figure></li>
-<li><h3>Save and launch</h3><p>Press <strong>Save</strong>, then <strong>Launch</strong>. The MicroVM starts in a few seconds; the app then copies credentials and clones the repo, and the terminal opens. Run <code>claude</code> to start working.</p>
-<figure class="shot"><img src="../../assets/guide/v0/qs-terminal.jpg" width="1440" height="900" loading="lazy" alt="A terminal in the running MicroVM: the repo is cloned and Claude Code answers a prompt."></figure></li>
-<li><h3>Suspend, resume, terminate</h3><p><strong>Suspend</strong> pauses the MicroVM and its billing; it also suspends by itself after 5 minutes with no terminal connected. <strong>Resume and Reconnect</strong> brings it back with the session as you left it. <strong>Terminate…</strong> stops it for good: anything you didn't push is lost, so the app asks first. The workspace stays for the next launch.</p>
-<figure class="shot"><img src="../../assets/guide/v0/qs-suspended.jpg" width="1440" height="900" loading="lazy" alt="A suspended MicroVM with the Resume and Reconnect button over its terminal."></figure></li>
+<figure class="shot"><img src="../../assets/guide/v0/qs-claude.jpg" width="1440" height="830" loading="lazy" alt="The Claude Code section of the workspace, with a saved token selected."></figure></li>
+<li><h3>Save and launch</h3><p>Press <strong>Save</strong>, then <strong>Launch</strong>. The MicroVM starts in a few seconds; the app then copies credentials and clones the repo, and the terminal opens.</p></li>
+<li><h3>Work with Claude Code</h3><p>In the shell, <code>cd</code> into the repo and run <code>claude</code>. A MicroVM is a new machine, so Claude Code asks its first-run questions: a theme, and whether you trust the folder. It's already signed in with your token.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-terminal.jpg" width="1440" height="830" loading="lazy" alt="A terminal in the running MicroVM: Claude Code, started in the cloned repo, answers a question about it."></figure></li>
+<li><h3>Copy files both ways</h3><p><strong>Upload…</strong> copies files from your Mac into the MicroVM's home folder; you can also drop them on the terminal. <strong>Download…</strong> browses the MicroVM's files: choose one, or type its path, and save it on your Mac. Files are limited to 100 MB each.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-upload.jpg" width="1440" height="830" loading="lazy" alt="A notice over the terminal: Uploaded to the home folder."></figure>
+<figure class="shot"><img src="../../assets/guide/v0/qs-download.jpg" width="1440" height="830" loading="lazy" alt="The Download from the MicroVM sheet, listing the home folder with a path typed."></figure></li>
+<li><h3>Suspend, resume, terminate</h3><p><strong>Suspend</strong> pauses the MicroVM and its billing; it also suspends by itself after 5 minutes with no terminal connected. <strong>Resume and Reconnect</strong> brings it back with the session as you left it, Claude Code included. <strong>Terminate…</strong> stops it for good: anything you didn't push or download is lost, so the app asks first. The workspace stays for the next launch.</p>
+<figure class="shot"><img src="../../assets/guide/v0/qs-suspended.jpg" width="1440" height="830" loading="lazy" alt="A suspended MicroVM with the Resume and Reconnect button over its terminal."></figure></li>
 </ol>
 <h2>Next</h2>
 <p>To keep files between MicroVMs, see <a href="persistent-workspace.html">A workspace that keeps its files</a>. For everything a workspace can hold, see <a href="workspaces.html">Workspaces</a>.</p>

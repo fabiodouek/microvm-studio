@@ -11,7 +11,7 @@
       },
       {
         "kind" : "bullet",
-        "text" : "An AWS account in a region with Lambda MicroVMs. AWS lists them under [AWS Capabilities by Region](https:\/\/builder.aws.com\/build\/capabilities)."
+        "text" : "An AWS account in a region with Lambda MicroVMs. AWS lists them on the [Lambda MicroVMs page](https:\/\/aws.amazon.com\/lambda\/lambda-microvms\/)."
       },
       {
         "kind" : "bullet",
@@ -1299,7 +1299,7 @@
       },
       {
         "kind" : "bullet",
-        "text" : "⌘?: MicroVM Studio Help"
+        "text" : "⌘?: User Guide, on the website"
       },
       {
         "kind" : "bullet",

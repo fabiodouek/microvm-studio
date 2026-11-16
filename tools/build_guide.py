@@ -7,8 +7,8 @@ A version's folder holds:
   help.json            the app's own Help pages, exported from the app's source
                        (HELP_EXPORT=…/help.json swift test --filter exportsTheHelpPages), so the
                        reference can't drift from the app
-  quick-start.html, persistent-workspace.html
-                       the walkthroughs, written by hand
+  install.html, quick-start.html, persistent-workspace.html
+                       the install page and the walkthroughs, written by hand
 
 The guide is versioned by the app's major version (v0 for 0.x). When a major version changes how
 the app works, copy tools/guide/v0 to tools/guide/v1, export its help.json again, set CURRENT below,
@@ -24,7 +24,7 @@ SOURCES = ROOT / "tools" / "guide"
 CURRENT = "v0"
 APP_VERSIONS = {"v0": "MicroVM Studio 0.x"}
 
-WALKTHROUGHS = [("quick-start", "Quick start"), ("persistent-workspace", "A workspace that keeps its files")]
+WALKTHROUGHS = [("install", "Install"), ("quick-start", "Quick start"), ("persistent-workspace", "A workspace that keeps its files")]
 # A Help page whose id is taken by a walkthrough gets another file name.
 RENAMED = {"persistent-workspace": "persistent-workspace-reference"}
 
@@ -33,7 +33,7 @@ HEADER = """<header class="site-header"><div class="wrap">
 <nav class="site-nav" aria-label="Site">
 <a href="../" aria-current="page">User guide</a>
 <a href="../../#videos">Walkthroughs</a>
-<a href="https://github.com/fabiodouek/microvm-studio/releases/latest">Download</a>
+<a href="install.html">Download</a>
 </nav></div></header>"""
 
 FOOTER = """<footer class="site-footer"><div class="wrap">
@@ -126,9 +126,10 @@ def build(version):
     reference = "".join(f'<li><a href="{names[t["id"]]}.html">{html.escape(t["title"])}</a></li>' for t in topics)
     overview = f"""<h1>MicroVM Studio user guide</h1>
 <p class="lead muted">MicroVM Studio starts AWS Lambda MicroVMs from workspaces you set up, and gives each one a terminal on your Mac.</p>
-<p>This is guide <strong>{version}</strong>, for {html.escape(APP_VERSIONS.get(version, version))}. The guide is versioned with the app's major version; older versions stay at their own address when a new one is published. The same pages are in the app, without the pictures, under <strong>Help → MicroVM Studio Help</strong>.</p>
+<p>This is guide <strong>{version}</strong>, for {html.escape(APP_VERSIONS.get(version, version))}. The guide is versioned with the app's major version; older versions stay at their own address when a new one is published. The app opens it from <strong>Help → User Guide</strong>.</p>
 <h2>Start here</h2>
 <ul>
+<li><a href="install.html"><strong>Install</strong></a>: what you need, the download, and the first launch.</li>
 <li><a href="quick-start.html"><strong>Quick start</strong></a>: from a new install to a running MicroVM, with GitHub and Claude Code. Needs no VPC.</li>
 <li><a href="persistent-workspace.html"><strong>A workspace that keeps its files</strong></a>: a network connector, an EFS file system, and a <code>/workspace</code> that outlives its MicroVMs.</li>
 </ul>

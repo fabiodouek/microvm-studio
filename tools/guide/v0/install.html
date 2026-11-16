@@ -1,0 +1,24 @@
+<h1>Install</h1>
+<p class="lead muted">MicroVM Studio is a Mac app. It's free, and one download runs on every supported Mac.</p>
+<h2>What you need</h2>
+<ul>
+<li>A Mac with macOS 15 (Sequoia) or later. The same download runs on Apple silicon and on Intel Macs.</li>
+<li>An AWS account in a region with Lambda MicroVMs. AWS lists them on the <a href="https://aws.amazon.com/lambda/lambda-microvms/">Lambda MicroVMs page</a>.</li>
+<li>An AWS profile on your Mac, in <code>~/.aws/config</code> or <code>~/.aws/credentials</code>. The AWS CLI isn't needed.</li>
+</ul>
+<h2>Install</h2>
+<ol class="steps">
+<li><h3>Download</h3><p><a class="button primary" href="https://github.com/fabiodouek/microvm-studio/releases/latest/download/MicroVMStudio.dmg">Download MicroVM Studio</a></p><p>The file is <code>MicroVMStudio.dmg</code>, about 40 MB. Its checksum is on the <a href="https://github.com/fabiodouek/microvm-studio/releases/latest">release page</a>.</p></li>
+<li><h3>Copy it to Applications</h3><p>Open the disk image and drag <strong>MicroVM Studio</strong> onto the <strong>Applications</strong> folder. Then eject the disk image.</p></li>
+<li><h3>Open it</h3><p>Open <strong>MicroVM Studio</strong> from Applications. The first time, macOS asks whether to open an app downloaded from the internet: choose <strong>Open</strong>. The app is signed with a Developer ID and notarized by Apple, so no security setting has to change.</p></li>
+<li><h3>Start</h3><p>The main window opens on <strong>Get started</strong>. Carry on with the <a href="quick-start.html">Quick start</a>.</p></li>
+</ol>
+<h2>What macOS asks for</h2>
+<ul>
+<li><strong>Keychain:</strong> the app keeps your GitHub sign-in and other secrets in your Mac's Keychain. macOS may ask before the app reads one back.</li>
+<li><strong>Files:</strong> the app reads your AWS profiles in <code>~/.aws</code>, and the files you choose to upload.</li>
+</ul>
+<h2>Updates</h2>
+<p>The app checks for updates by itself and tells you when there's one. <strong>MicroVM Studio → Check for Updates…</strong> checks now. <strong>Settings → General</strong> has the switches for automatic checks and automatic installs.</p>
+<h2>Remove it</h2>
+<p>First terminate your MicroVMs and delete what the app made in AWS, in Settings: images, file systems and network connectors stay in your account otherwise. Then drag the app from Applications to the Trash. Its settings and workspaces are in <code>~/Library/Application Support/MicroVMStudio</code>.</p>
