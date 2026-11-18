@@ -27,7 +27,7 @@
       },
       {
         "kind" : "bullet",
-        "text" : "**Add an AWS profile.** **Add a Profile…** opens Settings → General. In the **AWS profile** menu at the top, **Add a Profile…** saves a profile for IAM Identity Center and signs you in in your browser. Using access keys? Run `aws configure` in Terminal, then choose **Reload Profiles** in the same menu. See Profiles and Regions."
+        "text" : "**Add an AWS profile.** **Add a Profile…** opens Settings → General. In the **AWS profile** menu at the top, **Add a Profile…** saves a profile for IAM Identity Center and signs you in in your browser. Using an IAM user's access key? **Add Access Keys…** in the same menu saves it as a profile. See Profiles and Regions."
       },
       {
         "kind" : "bullet",
@@ -105,7 +105,7 @@
       },
       {
         "kind" : "paragraph",
-        "text" : "The top of Settings → General, Network, Images and Storage says **AWS profile:**, with the profile's name and badge in its own colour. Open it to choose another profile, or **Add a Profile…** to sign in with IAM Identity Center. The menu ticks the profile shown. **Reload Profiles** reads `~\/.aws` again, after `aws configure` or an edit of your own. Beside the menu, the profile says **Signed in** or **Sign-in needed**, with **Sign In…** for an IAM Identity Center profile; in the menu, the other profiles say what the last listing found. Every one of those tabs follows the switcher, so you always know whose settings you are changing. In General, the sections under **All profiles** (New workspaces, Notifications and Updates) don't follow it: they apply to every profile."
+        "text" : "The top of Settings → General, Network, Images and Storage says **AWS profile:**, with the profile's name and badge in its own colour. Open it to choose another profile, or **Add a Profile…** to sign in with IAM Identity Center. **Add Access Keys…** saves a profile for an IAM user's access key: a name, the access key ID, the secret access key and a default region. It's written to the `credentials` file in your AWS settings folder, as `aws configure` writes it, so the AWS CLI can use the profile too; what's already in the file is left as it is. Where you can, prefer IAM Identity Center, whose sign-ins expire by themselves. The menu ticks the profile shown. **Reload Profiles** reads `~\/.aws` again, after `aws configure` or an edit of your own. Beside the menu, the profile says **Signed in** or **Sign-in needed**, with **Sign In…** for an IAM Identity Center profile; in the menu, the other profiles say what the last listing found. Every one of those tabs follows the switcher, so you always know whose settings you are changing. In General, the sections under **All profiles** (New workspaces, Notifications and Updates) don't follow it: they apply to every profile."
       },
       {
         "kind" : "paragraph",
